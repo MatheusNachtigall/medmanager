@@ -1,0 +1,128 @@
+CREATE PROCEDURE [#TABELA#_LISTAR]
+(
+	@pagina int = NULL,
+	@registrosPorPagina int = NULL,
+	@ordemCampo VARCHAR(255) = '#ID#',
+	@ordemTipo VARCHAR(4) = 'ASC',
+	@totalRegistros INT = NULL OUTPUT,
+#CAMPOS_PARAMETROS#
+)
+AS
+BEGIN
+
+	IF (@pagina IS NULL OR @pagina = 0) SET @pagina = 1
+	IF (@registrosPorPagina IS NULL) SET @registrosPorPagina = 0
+
+	DECLARE @startRowIndex INT
+	DECLARE @lastKeyValue NUMERIC(18,0)
+	DECLARE @lastAscendingSortValue SQL_VARIANT
+	DECLARE @lastDescendingSortValue SQL_VARIANT
+
+	SET @totalRegistros = (
+		SELECT
+			COUNT(1)
+		FROM
+			[#TABELA#]#RELACIONAMENTOS_1#
+		WHERE
+#WHERE_1#
+	)
+
+	SET @startRowIndex = ((@pagina - 1) * @registrosPorPagina)
+	IF (@startRowIndex > 0)
+	BEGIN
+		SET ROWCOUNT @startRowIndex
+		SELECT 
+			@lastKeyValue = [UniqueValue],
+			@lastAscendingSortValue = [AscendingSort],
+			@lastDescendingSortValue = [DescendingSort]
+		FROM
+			(
+				SELECT
+					[#TABELA#].[#ID#] AS [UniqueValue],
+					CASE
+#CASE_ORDEM_DESC_1#
+					ELSE
+						NULL 
+					END AS [DescendingSort],
+					CASE
+#CASE_ORDEM_ASC_1#
+					ELSE
+						NULL
+					END AS [AscendingSort]
+				FROM
+					[#TABELA#]#RELACIONAMENTOS_2#
+				WHERE
+#WHERE_2#
+			) AS tab
+		ORDER BY 
+			[AscendingSort] ASC,
+			[DescendingSort] DESC,
+			[UniqueValue] ASC
+	END
+
+	SET ROWCOUNT @registrosPorPagina 
+
+	SELECT
+		*
+	FROM
+		(
+			SELECT
+#CAMPOS_SELECT#
+				[#TABELA#].[#ID#] AS [UniqueValue],
+				CASE
+#CASE_ORDEM_DESC_2#
+				ELSE
+					NULL
+				END AS [DescendingSort],
+				CASE
+#CASE_ORDEM_ASC_2#
+				ELSE
+					NULL
+				END AS [AscendingSort]
+			FROM
+				[#TABELA#]#RELACIONAMENTOS_3#
+			WHERE
+#WHERE_3#
+		) AS tab
+	WHERE
+		(
+			@lastAscendingSortValue IS NULL
+			AND @lastDescendingSortValue IS NULL
+			AND @lastKeyValue IS NULL
+		)
+		OR
+		(
+			(@lastAscendingSortValue IS NOT NULL)
+			AND
+			(
+				([AscendingSort] > @lastAscendingSortValue)
+				OR
+				(
+					[AscendingSort] = @lastAscendingSortValue
+					AND [UniqueValue] > @lastKeyValue
+				)
+			)
+		)
+		OR
+		(
+			(@lastDescendingSortValue IS NOT NULL)
+			AND
+			(
+				([DescendingSort] < @lastDescendingSortValue)
+				OR
+				(
+					[DescendingSort] = @lastDescendingSortValue
+					AND [UniqueValue] > @lastKeyValue
+				)
+			)
+		)
+	ORDER BY
+		[AscendingSort] ASC,
+		[DescendingSort] DESC,
+		[UniqueValue] ASC
+
+	SET ROWCOUNT 0 
+
+	RETURN @@Error
+
+END

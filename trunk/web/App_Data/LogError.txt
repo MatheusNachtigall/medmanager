@@ -1,0 +1,40 @@
+﻿Data: 09/01/2020 17:11:34
+Origem: PROJETO_Service.Listar(filtro, pagina, registrosPorPagina, ordem, ordemTipo);
+Mensagem: System.ArgumentException: Column 'PROJETO_ESCOPO' does not belong to table .
+   at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at CRM_Blue.ADO.PROJETO_ADO.Popular(DataRow row) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\ADO\PROJETO_ADO.cs:line 434
+   at CRM_Blue.ADO.PROJETO_ADO.Listar(PROJETO filtro, Nullable`1 pagina, Nullable`1 registrosPorPagina, Nullable`1 ordem, Nullable`1 ordemTipo) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\ADO\PROJETO_ADO.cs:line 243
+   at CRM_Blue.Service.PROJETO_Service.Listar(PROJETO filtro, Int32 pagina, Int32 registrosPorPagina, PROJETO_Ordem ordem, OrdemTipo ordemTipo) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\Service\PROJETO_Service.cs:line 63
+-------------------------------------------
+ 
+Data: 09/01/2020 17:17:53
+Origem: PROJETO_Service.Listar(filtro, pagina, registrosPorPagina, ordem, ordemTipo);
+Mensagem: System.ArgumentException: Column 'PROJETO_ESCOPO' does not belong to table .
+   at System.Data.DataRow.GetDataColumn(String columnName)
+   at System.Data.DataRow.get_Item(String columnName)
+   at CRM_Blue.ADO.PROJETO_ADO.Popular(DataRow row) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\ADO\PROJETO_ADO.cs:line 434
+   at CRM_Blue.ADO.PROJETO_ADO.Listar(PROJETO filtro, Nullable`1 pagina, Nullable`1 registrosPorPagina, Nullable`1 ordem, Nullable`1 ordemTipo) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\ADO\PROJETO_ADO.cs:line 243
+   at CRM_Blue.Service.PROJETO_Service.Listar(PROJETO filtro, Int32 pagina, Int32 registrosPorPagina, PROJETO_Ordem ordem, OrdemTipo ordemTipo) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\Service\PROJETO_Service.cs:line 63
+-------------------------------------------
+ 
+Data: 10/01/2020 11:44:30
+Origem: CIDADE_Service.Inserir(item);
+Mensagem: System.Data.SqlClient.SqlException (0x80131904): Cannot insert the value NULL into column 'CIDADE_ID', table 'CRM_BLUE.dbo.CIDADE'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at CRM_Blue.Database.ExecuteNonQuery(DbCommand command) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\Database.cs:line 97
+   at CRM_Blue.ADO.CIDADE_ADO.Inserir(CIDADE item) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\ADO\CIDADE_ADO.cs:line 125
+   at CRM_Blue.Service.CIDADE_Service.Inserir(CIDADE item) in e:\GIT_Projetos\CRM\trunk\web\App_Code\CRM_Blue\Service\CIDADE_Service.cs:line 167
+ClientConnectionId:ad3a4cfb-a13c-4224-a7e5-28dba0479a69
+Error Number:515,State:2,Class:16
+-------------------------------------------
+ 

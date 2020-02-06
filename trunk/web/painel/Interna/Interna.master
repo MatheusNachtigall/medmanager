@@ -1,0 +1,66 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/painel/MasterPage.master" AutoEventWireup="true" CodeFile="Interna.master.cs" Inherits="Manager_Interna_Interna" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+	<asp:ContentPlaceHolder id="headInterna" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="content" Runat="Server">
+	<div id="header">
+        <h1>
+<%--			<span>Painel de Controle</span>--%>
+			Painel de Controle
+        </h1>
+		<ul>
+		    <li class="logout"><asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/painel/Default.aspx?l=1">Log Out</asp:HyperLink></li>
+		</ul>
+	</div>
+	<div id="shadow"><!-- --></div>
+	<nav class="menu-lateral">
+        <ul>
+            <li>
+				<span><b>Plantões</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink13" runat="server" NavigateUrl="~/painel/Modulos/Plantoes_Cadastros/Listar.aspx"> - Cadastro</asp:HyperLink></li>
+				</ul>
+			</li>
+            <li>
+				<span><b>Deduções</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink14" runat="server" NavigateUrl="~/painel/Modulos/Deducoes_Cadastros/Listar.aspx"> - Cadastro</asp:HyperLink></li>
+					<li><asp:HyperLink ID="HyperLink15" runat="server" NavigateUrl="~/painel/Modulos/Deducoes_Tipos/Listar.aspx"> - Tipos</asp:HyperLink></li>
+				</ul>
+			</li>
+            <li>
+				<span><b>Geral</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink11" runat="server" NavigateUrl="~/painel/Modulos/Geral_Cidades/Listar.aspx"> - Cidades</asp:HyperLink></li>
+					<li><asp:HyperLink ID="HyperLink12" runat="server" NavigateUrl="~/painel/Modulos/Geral_Hospitais/Listar.aspx"> - Hospitais</asp:HyperLink></li>
+				</ul>
+			</li>
+            <li>
+				<span><b>INSS</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/painel/Modulos/INSS_Cadastros/Listar.aspx"> - Cadastro</asp:HyperLink></li>
+					<li><asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/painel/Modulos/INSS_Relatorios/Listar.aspx"> - Relatórios</asp:HyperLink></li>
+				</ul>
+			</li>
+			<%--<li>
+				<span><b>Projetos</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/painel/Modulos/Projetos_Cadastros/Listar.aspx"> - Cadastros</asp:HyperLink></li>
+					<li><asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/painel/Modulos/Projetos_Faturamentos/Listar.aspx"> - Faturamentos</asp:HyperLink></li>
+				</ul>
+			</li>--%>
+			<li>
+				<span><b>Relatórios</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Graficos/Listar.aspx"> - Gráficos</asp:HyperLink></li>
+					<li><%--<asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Faturamento/Listar.aspx"> - Faturamento</asp:HyperLink>--%></li>
+				</ul>
+			</li>
+        </ul>
+	</nav>
+	<div id="content">
+        <asp:ContentPlaceHolder id="contentInterna" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+</asp:Content>

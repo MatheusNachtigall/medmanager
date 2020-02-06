@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>UNITED TO WIN</title>
+    <link rel="stylesheet" href="icons/material.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+</head>
+<body>
+    <div class="topo-fixo z-depth-1">
+        <div class="orange darken-3 white-text valign-wrapper">
+            <h4 class="titulo">UNITED TO WIN</h4>
+            
+           
+        </div>
+        <div class="row">
+            <div class="">
+                <ul class="tabs yellow darken-4">
+                    <li class="tab col s6"><a class="white-text waves-effect" href="#treinamento">Treinamento</a></li>
+                    <li class="tab col s6"><a class="white-text waves-effect" href="#portal">Portal</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section" id="treinamento">
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="nvAtual" type="number" class="validate">
+                            <label for="nvAtual">Nível atual:</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="nvDesejado" type="number" class="validate">
+                            <label for="nvDesejado">Nível desejado:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select id="classe" onchange="calculaTreinamento()">
+                                <option value="1" selected>Guerreiro</option>
+                                <option value="2">Carpinteiro</option>
+                                <option value="3">Ferreiro</option>
+                                <option value="4">Outros</option>
+                            </select>
+                            <label>Classe:</label>
+                        </div>
+                    </div>
+                    <h5 class="brown-text">Resultado</h5>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel">
+                                <h6 class="brown-text">Tempo para evoluir: </h6><span id="respTreinamento"></span>
+                                <h6 class="brown-text">Diamantes: </h6><span id="respDiamantes"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="section" id="portal">
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s5">
+                            <select id="nivel" onchange="validaCampos()">
+                                    <option value="XX">-Selecione-</option>
+                                </select>
+                                <label>Nível do portal:</label>
+                        </div>
+                        <div class="input-field col s7 right-align">
+                            <span id="mult">Multiplicador:</span> 
+                            <div id="mult-radio">
+                                <label> <input class="with-gap" type="radio" name="mult" value="1" checked onclick="validaCampos()"/> <span class="black-text">x1</span> </label>
+                                <label> <input class="with-gap" type="radio" name="mult" value="2" onclick="validaCampos()"/> <span class="black-text">x2</span> </label>
+                                <label> <input class="with-gap" type="radio" name="mult" value="3" onclick="validaCampos()"/> <span class="black-text">x3</span> </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-panel amber lighten-5">
+
+                        <h6 class="brown-text">Preencha apenas 1 campo abaixo: </h6>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="codMaca" type="number" class="validate">
+                                <label for="codMaca">Quantidade de Maçãs que deseja usar:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="codAlmas" type="number" class="validate">
+                                <label for="codAlmas">Almas que deseja Coletar:</label>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="brown-text">Resultado</h5>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel">
+                                <h6 class="brown-text" id="respPortal"></h6>
+                                <h6 class="brown-text" id="respPortalVezes"></h6>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="logo">
+            <img src="bg.png" alt="">
+        </div> -->
+    </div>
+       
+
+
+
+    <div class="fixed-action-btn">
+        <a id="btn-limpar" class="btn waves-effect waves-light brown modal-trigger">
+            Limpar
+            <i class="material-icons right">clear_all</i>
+        </a>
+
+        
+    </div>
+
+
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+    <script src="js/portal.js"></script>
+    <script src="js/guerreiros.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
