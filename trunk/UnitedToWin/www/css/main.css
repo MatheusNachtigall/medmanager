@@ -6,10 +6,10 @@ body{
     /* background-color: #f2f2f2; */
     
     /* background: #f2f2f2 url('../bg.png') no-repeat ; */
-    background: #f2f2f2 url('../images/bg.png') no-repeat ;
+    background: #f2f2f2 url('../images/stethoscope.png') no-repeat ;
     background-size: 50%;
     background-attachment: fixed;
-    background-position: center 50%;
+    background-position: center 80%;
   }
 
 .logo{
@@ -72,9 +72,9 @@ body{
   input[type=number]:not(.browser-default):focus:not([readonly]),
   input[type=search]:not(.browser-default):focus:not([readonly]),
   textarea.materialize-textarea:focus:not([readonly]) {
-    border-bottom: 1px solid #fb8c00 ;
-    -webkit-box-shadow: 0 1px 0 0 #fb8c00 ;
-            box-shadow: 0 1px 0 0 #fb8c00 ;
+    border-bottom: 1px solid #388e3c ;
+    -webkit-box-shadow: 0 1px 0 0 #388e3c ;
+            box-shadow: 0 1px 0 0 #388e3c ;
   }
   
   input:not([type]):focus:not([readonly]) + label,
@@ -90,12 +90,12 @@ body{
   input[type=number]:not(.browser-default):focus:not([readonly]) + label,
   input[type=search]:not(.browser-default):focus:not([readonly]) + label,
   textarea.materialize-textarea:focus:not([readonly]) + label {
-    color: #fb8c00 ;
+    color: #388e3c ;
   }
 
   .dropdown-content li > a, .dropdown-content li > span {
     font-size: 16px;
-    color: #fb8c00 ;
+    color: #388e3c ;
     display: block;
     line-height: 22px;
     padding: 14px 16px;
@@ -127,27 +127,27 @@ input.valid[type=search]:not(.browser-default),
 input.valid[type=search]:not(.browser-default):focus,
 textarea.materialize-textarea.valid,
 textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-dropdown {
-  border-bottom: 1px solid #f57f17 ;
-  -webkit-box-shadow: 0 1px 0 0 #f57f17 ;
-          box-shadow: 0 1px 0 0 #f57f17 ;
+  border-bottom: 1px solid #1B5E20 ;
+  -webkit-box-shadow: 0 1px 0 0 #1B5E20 ;
+          box-shadow: 0 1px 0 0 #1B5E20 ;
 }
 
 
 [type="radio"]:checked + span:after,
 [type="radio"].with-gap:checked + span:before,
 [type="radio"].with-gap:checked + span:after {
-  border: 2px solid #f57f17;
+  border: 2px solid #1B5E20;
 }
 
 [type="radio"]:checked + span:after,
 [type="radio"].with-gap:checked + span:after {
-  background-color: #f57f17;
+  background-color: #1B5E20;
 }
 
 .input-field .prefix.active {
-    color: #fb8c00  !important;
+    color: #388e3c  !important;
   }
 
   .select-wrapper input.select-dropdown:focus {
-    border-bottom: 1px solid #fb8c00 ;
+    border-bottom: 1px solid #388e3c ;
   }

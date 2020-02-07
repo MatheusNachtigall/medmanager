@@ -3,60 +3,106 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>UNITED TO WIN</title>
-    <link rel="stylesheet" href="icons/material.css">
+    <title>Med Manager</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/main.css">
     
 </head>
 <body>
+
+    <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+          <div class="background">
+            <img src="images/sidebar_img.jpg">
+          </div>
+          <a href="#user"><img class="circle" src="images/elisa.png"></a>
+          <a href="#name"><span class="white-text name">Elisa Knabach</span></a>
+          <a href="#email"><span class="white-text email">elisa.knabach@gmail.com</span></a>
+        </div></li>
+        <li><a class="waves-effect" href="#!"><i class="material-icons">add_circle</i>Adicionar Plantão</a></li>
+        <li><a class="waves-effect" href="#!"><i class="material-icons">show_chart</i>Relatório Mês</a></li>
+        <li><div class="divider"></div></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header waves-effect">Adicionar<i class="material-icons">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="#!">Cidade</a></li>
+                <li><a href="#!">Hospital</a></li>
+                <li><a href="#!">Deduções</a></li>
+                <li><a href="#!">INSS</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+      
     <div class="topo-fixo z-depth-1">
-        <div class="orange darken-3 white-text valign-wrapper">
-            <h4 class="titulo">UNITED TO WIN</h4>
-            
-           
+        <div class="green darken-4 white-text valign-wrapper">
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons right white-text">menu</i></a>
+            <h4 class="titulo">Med Manager</h4>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="">
-                <ul class="tabs yellow darken-4">
+                <ul class="tabs green darken-2">
                     <li class="tab col s6"><a class="white-text waves-effect" href="#treinamento">Treinamento</a></li>
                     <li class="tab col s6"><a class="white-text waves-effect" href="#portal">Portal</a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="container">
         <div class="section" id="treinamento">
             <div class="row">
                 <form class="col s12">
                     <div class="row">
-                        <div class="input-field col s6">
-                            <input id="nvAtual" type="number" class="validate">
-                            <label for="nvAtual">Nível atual:</label>
-                        </div>
-                        <div class="input-field col s6">
-                            <input id="nvDesejado" type="number" class="validate">
-                            <label for="nvDesejado">Nível desejado:</label>
-                        </div>
+                        <h5 class="black-text">Adicionar Plantão</h5>
+                        <br>
                     </div>
+
                     <div class="row">
                         <div class="input-field col s12">
-                            <select id="classe" onchange="calculaTreinamento()">
-                                <option value="1" selected>Guerreiro</option>
-                                <option value="2">Carpinteiro</option>
-                                <option value="3">Ferreiro</option>
-                                <option value="4">Outros</option>
+                            <select id="hospital">
+                                <option value="" selected></option>
+                                <option value="1">Camaquã</option>
+                                <option value="2">Candiota</option>
+                                <option value="3">Pinheiro</option>
                             </select>
-                            <label>Classe:</label>
+                            <label>Hospital:</label>
                         </div>
                     </div>
-                    <h5 class="brown-text">Resultado</h5>
                     <div class="row">
-                        <div class="col s12">
-                            <div class="card-panel">
-                                <h6 class="brown-text">Tempo para evoluir: </h6><span id="respTreinamento"></span>
-                                <h6 class="brown-text">Diamantes: </h6><span id="respDiamantes"></span>
-                            </div>
+                        <div class="input-field col s6">
+                            <input id="data_plantao" type="text" class="date">
+                            <label for="data_plantao">Data Plantão:</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="data_pagamento" type="text" class="date">
+                            <label for="data_pagamento">Data Pagamento:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label>
+                                <input type="checkbox" />
+                                <span>CNPJ</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s6">
+                            <label>
+                                <input id="indeterminate-checkbox" type="checkbox" />
+                                <span>INSS</span>
+                            </label>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="input-field col s12">
+                            <input id="valor" type="text" class="money">
+                            <label for="valor">Valor:</label>
                         </div>
                     </div>
                 </form>
@@ -64,7 +110,7 @@
         </div>
 
 
-        <div class="section" id="portal">
+        <!-- <div class="section" id="portal">
             <div class="row">
                 <form class="col s12">
                     <div class="row">
@@ -110,9 +156,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-        <!-- <div class="logo">
-            <img src="bg.png" alt="">
         </div> -->
     </div>
        
@@ -123,6 +166,7 @@
         <a id="btn-limpar" class="btn waves-effect waves-light brown modal-trigger">
             Limpar
             <i class="material-icons right">clear_all</i>
+
         </a>
 
         
@@ -135,8 +179,8 @@
     <script src="js/materialize.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
-    <script src="js/portal.js"></script>
-    <script src="js/guerreiros.js"></script>
+    <script src="js/vendor/jquery.mask.min.js"></script>
     <script src="js/app.js"></script>
+    <!-- <script src="js/app.js"></script> -->
 </body>
 </html>
