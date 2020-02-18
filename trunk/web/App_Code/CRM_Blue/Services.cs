@@ -119,7 +119,20 @@ namespace CRM_Blue
 		{
 			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
 			List<PLANTAO> lstPlantao = new PLANTAO_Service().Listar();
-			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstPlantao});
+
+			List<object> lstRetorno = new List<object>();
+			for (int i = 0; i < lstPlantao.Count; i++)
+			{
+				lstRetorno.Add(new
+				{
+					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
+					VALOR = lstPlantao[i].VALOR
+				});
+			}
+
+
+
+			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
 			return ret;
 		}
 
