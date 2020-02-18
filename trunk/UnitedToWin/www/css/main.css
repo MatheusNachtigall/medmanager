@@ -151,3 +151,16 @@ textarea.materialize-textarea.valid:focus, .select-wrapper.valid > input.select-
   .select-wrapper input.select-dropdown:focus {
     border-bottom: 1px solid #388e3c ;
   }
+
+
+  li.tab.side {
+    display: block;
+    text-align: inherit;
+}
+
+ul.tabs {
+  display: block;
+}
+ul.tabs .indicator{
+  display:none;
+}
