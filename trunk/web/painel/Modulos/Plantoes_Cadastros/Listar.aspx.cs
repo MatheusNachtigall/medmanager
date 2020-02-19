@@ -149,7 +149,8 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Listar : System.Web.UI.P
 
 		if (!String.IsNullOrEmpty(ddlDataIni.SelectedValue))
 		{
-			filtro.DATA_PLANTAO = DateTime.Parse(ddlDataIni.SelectedValue);
+			OrdemTipo = (Session["PLANTAO_Ordem"] != null) ? (OrdemTipo)Session["PLANTAO_Ordem_Tipo"] : OrdemTipo.Ascendente;
+			filtro.DATA_PLANTAO = DateTime.Parse(ddlDataIni.SelectedValue).AddMinutes(-1);
 			DateTime DATA_FIM = DateTime.Parse(ddlDataIni.SelectedValue).AddMonths(1).AddMinutes(-1);
 			pagLista = new PLANTAO_Service_EXT().Listar((PLANTAO)Session["PLANTAO_Filtro"], this.Pagina, 100, Ordem, OrdemTipo, DATA_FIM);
 			phValorTotal.Visible = true;

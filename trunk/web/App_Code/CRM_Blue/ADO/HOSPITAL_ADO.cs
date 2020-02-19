@@ -33,13 +33,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@HOSPITAL_ID", DbType.Int32, filtro.HOSPITAL_ID);
                 }
-                if (filtro.CIDADE_ID != null)
-                {
-                    db.AddInParameter(cmd, "@CIDADE_ID", DbType.Int32, filtro.CIDADE_ID);
-                }
                 if (!String.IsNullOrEmpty(filtro.NOME))
                 {
                     db.AddInParameter(cmd, "@NOME", DbType.String, filtro.NOME);
+                }
+                if (!String.IsNullOrEmpty(filtro.CIDADE))
+                {
+                    db.AddInParameter(cmd, "@CIDADE", DbType.String, filtro.CIDADE);
+                }
+                if (!String.IsNullOrEmpty(filtro.COR))
+                {
+                    db.AddInParameter(cmd, "@COR", DbType.String, filtro.COR);
                 }
             }
             DataTable dataTable = db.ExecuteDataTable(cmd);
@@ -50,7 +54,7 @@ namespace CRM_Blue.ADO
             if (dataTable.Rows.Count > 0)
             {
                 HOSPITAL item = this.Popular(dataTable.Rows[0]);
-                item.CIDADE = new CIDADE_ADO().Popular(dataTable.Rows[0]);
+
                 return item;
             }
 
@@ -92,13 +96,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@HOSPITAL_ID", DbType.Int32, filtro.HOSPITAL_ID);
                 }
-                if (filtro.CIDADE_ID != null)
-                {
-                    db.AddInParameter(cmd, "@CIDADE_ID", DbType.Int32, filtro.CIDADE_ID);
-                }
                 if (!String.IsNullOrEmpty(filtro.NOME))
                 {
                     db.AddInParameter(cmd, "@NOME", DbType.String, filtro.NOME);
+                }
+                if (!String.IsNullOrEmpty(filtro.CIDADE))
+                {
+                    db.AddInParameter(cmd, "@CIDADE", DbType.String, filtro.CIDADE);
+                }
+                if (!String.IsNullOrEmpty(filtro.COR))
+                {
+                    db.AddInParameter(cmd, "@COR", DbType.String, filtro.COR);
                 }
             }
 
@@ -111,7 +119,7 @@ namespace CRM_Blue.ADO
             foreach (DataRow row in dataTable.Rows)
             {
                 HOSPITAL item = this.Popular(row);
-                item.CIDADE = new CIDADE_ADO().Popular(row);
+
                 itens.Add(item);
             }
 
@@ -129,8 +137,9 @@ namespace CRM_Blue.ADO
         {
 			DbCommand cmd = db.GetStoredProcCommand("HOSPITAL_INSERIR");
             db.AddOutParameter(cmd, "@HOSPITAL_ID", DbType.Int32, item.HOSPITAL_ID);
-            db.AddInParameter(cmd, "@CIDADE_ID", DbType.Int32, item.CIDADE_ID);
             db.AddInParameter(cmd, "@NOME", DbType.String, item.NOME);
+            db.AddInParameter(cmd, "@CIDADE", DbType.String, item.CIDADE);
+            db.AddInParameter(cmd, "@COR", DbType.String, item.COR);
             db.ExecuteNonQuery(cmd);
             item.HOSPITAL_ID = (Int32)db.GetParameterValue(cmd, "@HOSPITAL_ID");
             cmd.Connection.Close();
@@ -145,8 +154,9 @@ namespace CRM_Blue.ADO
         {
 			DbCommand cmd = db.GetStoredProcCommand("HOSPITAL_ATUALIZAR");
             db.AddInParameter(cmd, "@HOSPITAL_ID", DbType.Int32, item.HOSPITAL_ID);
-            db.AddInParameter(cmd, "@CIDADE_ID", DbType.Int32, item.CIDADE_ID);
             db.AddInParameter(cmd, "@NOME", DbType.String, item.NOME);
+            db.AddInParameter(cmd, "@CIDADE", DbType.String, item.CIDADE);
+            db.AddInParameter(cmd, "@COR", DbType.String, item.COR);
             db.ExecuteNonQuery(cmd);
             cmd.Connection.Close();
             cmd.Connection.Dispose();
@@ -165,13 +175,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@HOSPITAL_ID", DbType.Int32, filtro.HOSPITAL_ID);
                 }
-                if (filtro.CIDADE_ID != null)
-                {
-                    db.AddInParameter(cmd, "@CIDADE_ID", DbType.Int32, filtro.CIDADE_ID);
-                }
                 if (!String.IsNullOrEmpty(filtro.NOME))
                 {
                     db.AddInParameter(cmd, "@NOME", DbType.String, filtro.NOME);
+                }
+                if (!String.IsNullOrEmpty(filtro.CIDADE))
+                {
+                    db.AddInParameter(cmd, "@CIDADE", DbType.String, filtro.CIDADE);
+                }
+                if (!String.IsNullOrEmpty(filtro.COR))
+                {
+                    db.AddInParameter(cmd, "@COR", DbType.String, filtro.COR);
                 }
 			}
             db.ExecuteNonQuery(cmd);
@@ -186,8 +200,9 @@ namespace CRM_Blue.ADO
         {
             HOSPITAL reg = new HOSPITAL();
             reg.HOSPITAL_ID = ((row["HOSPITAL_HOSPITAL_ID"] != DBNull.Value)?Convert.ToInt32(row["HOSPITAL_HOSPITAL_ID"].ToString()):0);
-            reg.CIDADE_ID = ((row["HOSPITAL_CIDADE_ID"] != DBNull.Value)?Convert.ToInt32(row["HOSPITAL_CIDADE_ID"].ToString()):0);
             reg.NOME = ((row["HOSPITAL_NOME"] != DBNull.Value)?row["HOSPITAL_NOME"].ToString():String.Empty);
+            reg.CIDADE = ((row["HOSPITAL_CIDADE"] != DBNull.Value)?row["HOSPITAL_CIDADE"].ToString():String.Empty);
+            reg.COR = ((row["HOSPITAL_COR"] != DBNull.Value)?row["HOSPITAL_COR"].ToString():String.Empty);
             return reg;
         }
 

@@ -136,21 +136,23 @@ public partial class Manager_Modulos_Geral_Hospitais_Editar : System.Web.UI.Page
     {
         ltlObs.Text = "";
         if (string.IsNullOrEmpty(txtNome.Text)) ltlObs.Text += "Informe o Nome <br />";
-		if (string.IsNullOrEmpty(ddlCidade.SelectedValue)) ltlObs.Text += "Informe a Cidade <br />";
+		if (string.IsNullOrEmpty(txtCidade.Text)) ltlObs.Text += "Informe a Cidade <br />";
 		return string.IsNullOrEmpty(ltlObs.Text) ? true : false;
     }
 
     private HOSPITAL getCampos(HOSPITAL item)
     {
 		item.NOME = txtNome.Text;
-		item.CIDADE_ID = !String.IsNullOrEmpty(ddlCidade.SelectedValue) ? (Int32?)Convert.ToInt32(ddlCidade.SelectedValue) : null;
+		item.CIDADE = txtCidade.Text;
+		item.COR = color.Text;
 		return item;
     }
 
     private void setCampos(HOSPITAL item)
     {
         txtNome.Text = item.NOME;
-		ddlCidade.SelectedValue = Convert.ToString(item.CIDADE_ID);
+        txtCidade.Text = item.CIDADE;
+        color.Text = item.COR;
 	}
 
 	private void LoadForm()
@@ -162,11 +164,6 @@ public partial class Manager_Modulos_Geral_Hospitais_Editar : System.Web.UI.Page
 
 	private void CarregarCombos()
 	{
-		ddlCidade.DataSource = new CIDADE_Service().Listar(CIDADE_Ordem.NOME, OrdemTipo.Ascendente);
-		ddlCidade.DataTextField = "NOME";
-		ddlCidade.DataValueField = "CIDADE_ID";
-		ddlCidade.DataBind();
-		ddlCidade.Items.Insert(0, new ListItem { Value = "", Text = "" });
 	}
 	#endregion
 }

@@ -11,7 +11,8 @@ namespace CRM_Blue.Enumerator
     public enum HOSPITAL_Ordem
     {
         [Description("HOSPITAL_ID")] HOSPITAL_ID = 0,
-        [Description("CIDADE_ID")] CIDADE_ID = 1,
-        [Description("NOME")] NOME = 2
+        [Description("NOME")] NOME = 1,
+        [Description("CIDADE")] CIDADE = 2,
+        [Description("COR")] COR = 3
     }
 }

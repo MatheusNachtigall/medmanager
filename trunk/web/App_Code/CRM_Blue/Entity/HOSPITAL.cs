@@ -11,9 +11,9 @@ namespace CRM_Blue.Entity
     public class HOSPITAL
     {
         private Int32? _hOSPITAL_ID;
-        private Int32? _cIDADE_ID;
-        private CIDADE _CIDADE;
         private String _nOME;
+        private String _cIDADE;
+        private String _cOR;
 
         public Int32? HOSPITAL_ID
         {
@@ -21,22 +21,22 @@ namespace CRM_Blue.Entity
             set { _hOSPITAL_ID = value; }
         }
 
-        public Int32? CIDADE_ID
-        {
-            get { return _cIDADE_ID; }
-            set { _cIDADE_ID = value; }
-        }
-
-        public CIDADE CIDADE
-        {
-            get { return _CIDADE; }
-            set { _CIDADE = value; }
-        }
-
         public String NOME
         {
             get { return _nOME; }
             set { _nOME = value; }
+        }
+
+        public String CIDADE
+        {
+            get { return _cIDADE; }
+            set { _cIDADE = value; }
+        }
+
+        public String COR
+        {
+            get { return _cOR; }
+            set { _cOR = value; }
         }
 
         public HOSPITAL()

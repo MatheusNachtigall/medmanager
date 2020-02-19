@@ -49,6 +49,8 @@ public partial class Manager_Modulos_Geral_Hospitais_Listar : System.Web.UI.Page
     protected void btnLimpar_Click(object sender, EventArgs e)
     {
         txtNome.Text = String.Empty;
+		ddlNome.SelectedIndex = 0;
+		txtCidade.Text = String.Empty;
 		ddlCidade.SelectedIndex = 0;
 		this.CarregarLista();
         ScriptManager.RegisterClientScriptBlock(upConteudo, upConteudo.GetType(), "update", "PageLoad();", true);
@@ -68,8 +70,9 @@ public partial class Manager_Modulos_Geral_Hospitais_Listar : System.Web.UI.Page
             HOSPITAL item = (HOSPITAL)e.Item.DataItem;
             ((Literal)e.Item.FindControl("ltlID")).Text = ((HiddenField)e.Item.FindControl("hdnID")).Value = item.HOSPITAL_ID.ToString();
 			((Literal)e.Item.FindControl("ltlNome")).Text = item.NOME;
-            ((Literal)e.Item.FindControl("ltlCidade")).Text = item.CIDADE.NOME.ToString();
-        }
+            ((Literal)e.Item.FindControl("ltlCidade")).Text = item.CIDADE.ToString();
+			((Literal)e.Item.FindControl("ltlCor")).Text = item.COR.ToString();
+		}
     }
 
     protected void rptPagina_ItemDataBound(Object sender, RepeaterItemEventArgs e)
@@ -90,7 +93,7 @@ public partial class Manager_Modulos_Geral_Hospitais_Listar : System.Web.UI.Page
     {
 		HOSPITAL filtro = new HOSPITAL();
         filtro.NOME = String.Concat("%", txtNome.Text, "%");
-		filtro.CIDADE_ID = String.IsNullOrEmpty(ddlCidade.SelectedValue) ? null : (Int32?)Convert.ToInt32(ddlCidade.SelectedValue);
+		filtro.CIDADE = String.Concat("%", txtCidade.Text, "%");
 		Session["HOSPITAL_Filtro"] = filtro;
     }
 
@@ -118,9 +121,9 @@ public partial class Manager_Modulos_Geral_Hospitais_Listar : System.Web.UI.Page
 		ddlNome.DataBind();
 		ddlNome.Items.Insert(0, new ListItem { Value = "", Text = "" });
 
-		ddlCidade.DataSource = new CIDADE_Service().Listar(CIDADE_Ordem.NOME, OrdemTipo.Ascendente);
-		ddlCidade.DataTextField = "NOME";
-		ddlCidade.DataValueField = "CIDADE_ID";
+		ddlCidade.DataSource = new HOSPITAL_Service().Listar(HOSPITAL_Ordem.CIDADE, OrdemTipo.Ascendente);
+		ddlCidade.DataTextField = "CIDADE";
+		ddlCidade.DataValueField = "CIDADE";
 		ddlCidade.DataBind();
 		ddlCidade.Items.Insert(0, new ListItem { Value = "", Text = "" });
 	}

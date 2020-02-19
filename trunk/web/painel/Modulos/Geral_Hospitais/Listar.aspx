@@ -32,9 +32,10 @@
                     </div>
                     <div class="filtro-item">
                         <asp:Label ID="lblCidade" runat="server" AssociatedControlID="ddlCidade">Cidade</asp:Label>
-                        <div class="select">
-                            <asp:DropDownList runat="server" ID="ddlCidade" Width="240px"></asp:DropDownList>
-                        </div>
+                        <span class="input-txt">
+							<asp:TextBox runat="server" ID="txtCidade" CssClass="frmTxt typeahead" Width="302"></asp:TextBox>
+                            <asp:DropDownList runat="server" ID="ddlCidade" Width="240px" CssClass="hidden"></asp:DropDownList>
+                        </span>
                     </div>
                 </div>
                 <div class="options clearfix">
@@ -54,12 +55,14 @@
                         <col width="80" />
                         <col />
 						<col />
+                        <col width="100" />
                     </colgroup>
                     <thead>
                         <tr>
                         <th>ID</th>
                         <th>Nome</th>
 						<th>Cidade</th>
+						<th>Cor</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +72,7 @@
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlID"></asp:Literal><asp:HiddenField runat="server" ID="hdnID" /></div></td>
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlNome"></asp:Literal></td>
 						<td class="td-detalhe"><asp:Literal runat="server" ID="ltlCidade"></asp:Literal></td>
+						<td class="td-detalhe rgb"><asp:Literal runat="server" ID="ltlCor"></asp:Literal></td>
                     </tr>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -96,4 +100,9 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 
+    <script>
+        $('table .rgb').each(function () {
+            $(this).css("background-color", $(this).text());
+	    });
+    </script>
 </asp:Content>

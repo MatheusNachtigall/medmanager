@@ -67,6 +67,7 @@ namespace CRM_Blue
 						if (input.action.Equals("LOGIN")) ret = LOGIN(input);
 						if (input.action.Equals("TESTE_CONNECT")) ret = TESTE_CONNECT(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
+						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
 						
 						
 					}
@@ -126,11 +127,36 @@ namespace CRM_Blue
 				lstRetorno.Add(new
 				{
 					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
-					VALOR = lstPlantao[i].VALOR
+					VALOR = lstPlantao[i].VALOR,
+					COR = lstPlantao[i].HOSPITAL.COR
 				});
 			}
 
+			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
+			return ret;
+		}
 
+		public static string GRAFICO_MES(WS_Input ws_input)
+		{
+			DateTime date = DateTime.Now;
+			DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1).AddMinutes(-1);
+			DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddMinutes(-1);
+
+			PLANTAO filtro = new PLANTAO();
+			filtro.DATA_PLANTAO = firstDayOfMonth;
+
+			List<PLANTAO> lstPlantaoMes = new PLANTAO_Service_EXT().Listar(filtro, lastDayOfMonth);
+			
+			List<object> lstRetorno = new List<object>();
+			for (int i = 0; i < lstPlantaoMes.Count; i++)
+			{
+				lstRetorno.Add(new
+				{
+					HOSPITAL = lstPlantaoMes[i].HOSPITAL.NOME,
+					VALOR = lstPlantaoMes[i].VALOR,
+					COR = lstPlantaoMes[i].HOSPITAL.COR
+				});
+			}
 
 			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
 			return ret;

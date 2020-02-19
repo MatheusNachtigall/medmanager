@@ -34,5 +34,31 @@ namespace CRM_Blue.Service
                 throw ex;
             }
         }
-    }
+
+		public List<PLANTAO> Listar(PLANTAO filtro, PLANTAO_Ordem ordem, OrdemTipo ordemTipo, DateTime DATA_FIM)
+		{
+			try
+			{
+				return this._PLANTAO_ADO_EXT.Listar(filtro, null, null, ordem, ordemTipo, DATA_FIM).Itens;
+			}
+			catch (Exception ex)
+			{
+				LogError.GravarErro("PLANTAO_Service.Listar(filtro, ordem, ordemTipo);", ex);
+				throw ex;
+			}
+		}
+
+		public List<PLANTAO> Listar(PLANTAO filtro, DateTime DATA_FIM)
+		{
+			try
+			{
+				return this._PLANTAO_ADO_EXT.Listar(filtro, null, null, null, null, DATA_FIM).Itens;
+			}
+			catch (Exception ex)
+			{
+				LogError.GravarErro("PLANTAO_Service.Listar(filtro);", ex);
+				throw ex;
+			}
+		}
+	}
 }
