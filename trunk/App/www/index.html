@@ -127,52 +127,56 @@
                 <div><canvas id="chart-area" style="display: block; width: 386px; height: 193px;" width="772" height="386" class="chartjs-render-monitor"></canvas></div>
                 <canvas id="countries" width="600" height="400"></canvas>
                 <div class="row">
-                    <form class="col s12">
+                    <form action="javascript:;" id="frm_adicionar_plantao" autocomplete="off" class="col s12">
                         <div class="row">
                             <h5 class="black-text">Adicionar Plantão</h5>
                             <br>
                         </div>
     
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <select id="hospital">
-                                    <option value="" selected></option>
-                                    <option value="1">Camaquã</option>
-                                    <option value="2">Candiota</option>
-                                    <option value="3">Pinheiro</option>
-                                </select>
-                                <label>Hospital:</label>
+                           
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <select id="hospital">
+                                        <option value="" selected></option>
+                                        <option value="1">Camaquã</option>
+                                        <option value="2">Candiota</option>
+                                        <option value="3">Pinheiro</option>
+                                    </select>
+                                    <label>Hospital:</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input id="data_plantao" type="text" class="date">
-                                <label for="data_plantao">Data Plantão:</label>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="data_plantao" type="text" class="date">
+                                    <label for="data_plantao">Data Plantão:</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="data_pagamento" type="text" class="date">
+                                    <label for="data_pagamento">Data Pagamento:</label>
+                                </div>
                             </div>
-                            <div class="input-field col s6">
-                                <input id="data_pagamento" type="text" class="date">
-                                <label for="data_pagamento">Data Pagamento:</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <label>
-                                    <input type="checkbox" />
-                                    <span>CNPJ</span>
-                                </label>
-                            </div>
-                            <div class="input-field col s6">
-                                <label>
-                                    <input id="indeterminate-checkbox" type="checkbox" />
-                                    <span>INSS</span>
-                                </label>
-                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span>CNPJ</span>
+                                    </label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <label>
+                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <span>INSS</span>
+                                    </label>
+                                </div>
                             <br>
                             <br>
                             <br>
                             <div class="input-field col s12">
                                 <input id="valor" type="text" class="money">
                                 <label for="valor">Valor:</label>
+                            </div>
+                            <div class="center-align col s12">
+                                <input class="waves-effect waves-light btn-large" type="submit" name="frm_plantao_enviar" id="frm_plantao_enviar" value="Enviar">
                             </div>
                         </div>
                     </form>

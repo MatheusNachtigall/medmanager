@@ -56,7 +56,11 @@ $(document).ready(function(){
         }
     });
 
-
+    $('#frm_adicionar_plantao').submit(function() {
+		console.log('Enviando Form');
+        
+		return false;
+	});
 
 
 
