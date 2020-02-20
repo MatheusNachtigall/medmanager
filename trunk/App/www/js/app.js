@@ -65,7 +65,7 @@ let arrangePlantoes = function (lstPlantoes) {
     
     temp.forEach(element => {
         var mes = element.reduce(function (r, o) {
-            var m = new Date(o.DATA).toLocaleString('default', { month: 'short'}).toString().toUpperCase();
+            var m = new Date(o.DATA).toLocaleString('default', { month: 'long'}).toString();
             if (r[m]){
                 r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR});
             } else {
@@ -116,7 +116,7 @@ let buildMonthSelect = function () {
     PLANTOES_2.forEach(element => {
         selectHTML += ' <optgroup Label="' + element.ANO + '">';
         element.MESES.forEach(el => {
-            selectHTML += ' <option>' + el.MES + '</option>';
+            selectHTML += ' <option value="' + el.MES + '/' + element.ANO + '">' + el.MES.charAt(0).toUpperCase() + el.MES.slice(1) + '</option>';
         });
         selectHTML += ' </optgroup>';
     });
@@ -125,3 +125,10 @@ let buildMonthSelect = function () {
     $( 'select' ).formSelect();
 
 }
+
+
+$('#select-mes').on('change', function(){
+    let select_value = $(this).val();
+    let lstPlantoes = PLANTOES[select_value.split('/')[1]][select_value.split('/')[0]];
+    buildChartAndGraph(lstPlantoes)
+});

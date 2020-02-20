@@ -5,6 +5,9 @@ let LOAD_PLANTOES = function () {
             buildChartAndGraph(ret.lstPlantao);
             arrangePlantoes(ret.lstPlantao);
             buildMonthSelect();
+            // let month = new Date().toLocaleString('default', { month: 'short', year: 'numeric' }).toString().replace(' de ','/').toUpperCase();
+            // let lstPlantoes = PLANTOES[month.split('/')[1]][month.split('/')[0]];
+            // buildChartAndGraph(lstPlantoes)
         }
     });
 }
