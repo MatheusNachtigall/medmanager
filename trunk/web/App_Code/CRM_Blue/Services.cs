@@ -128,6 +128,7 @@ namespace CRM_Blue
 				{
 					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
 					VALOR = lstPlantao[i].VALOR,
+					DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
 					COR = lstPlantao[i].HOSPITAL.COR
 				});
 			}
