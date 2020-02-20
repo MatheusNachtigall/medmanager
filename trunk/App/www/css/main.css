@@ -6,7 +6,7 @@ body{
     /* background-color: #f2f2f2; */
     
     /* background: #f2f2f2 url('../bg.png') no-repeat ; */
-    background: #f2f2f2 url('../images/stethoscope.png') no-repeat ;
+    background: #f2f2f2 url('../images/stethoscope_fade.png') no-repeat ;
     background-size: 50%;
     background-attachment: fixed;
     background-position: center 80%;
@@ -172,9 +172,15 @@ ul.tabs .indicator{
 }
 
 .fw700{
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .pt5{
   padding-top: 5px !important;
+}
+
+a.btn-floating.waves-effect.waves-light{
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }

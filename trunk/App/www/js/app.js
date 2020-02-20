@@ -37,7 +37,7 @@ $('#frm_adicionar_plantao').submit(function() {
 });
 
 $("#btn-limpar").on("click", function () {
-    $('#hospital').val("");
+    $('#select-hospital').val("");
     $( 'select' ).formSelect();
     $('#data_plantao').val('');
     $('#data_pagamento').val('');
@@ -47,9 +47,13 @@ $("#btn-limpar").on("click", function () {
 
 });
 
+// $('a[href="#adicionar_plantao"').on('click', function(){
+//     LOAD_HOSPITAIS();
+// })
+
+
 
 let arrangePlantoes = function (lstPlantoes) {
-    
     
     PLANTOES = lstPlantoes.reduce(function (r, o) {
         var m = o.DATA.split(('-'))[2];
@@ -75,55 +79,54 @@ let arrangePlantoes = function (lstPlantoes) {
         }, {});
         PLANTOES[element[0].DATA.split(('-'))[2]] = mes
     });
-
-    var temp2 = LP.reduce(function (r, o) {
-        var m = o.DATA.split(('-'))[2];
-        if (r[m]){
-            r[m].MESES.push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA: o.DATA, COR: o.COR})
-        } else {
-            r[m] = {ANO: m, MESES: [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA: o.DATA, COR: o.COR}]};
-        }
-        return r;
-    }, {});
-    PLANTOES_2 = Object.keys(temp2).map(function(k){ return temp2[k]; });
-
-
-
-
-
-    PLANTOES_2.forEach(element => {
-        var mes = element.MESES.reduce(function (r, o) {
-            var m = new Date(o.DATA).toLocaleString('default', { month: 'long'}).toString();
-            if (r[m]){
-                r[m].DADOS.push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR});
-            } else {
-                r[m] = {MES: m, DADOS:[{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR}]}
-            }
-            return r;
-        }, {});
-        var temp3 = Object.keys(mes).map(function(k){ return mes[k]; });
-
-        temp2[element.MESES[0].DATA.split(('-'))[2]].MESES = temp3
-    });
-    PLANTOES_2 = Object.keys(temp2).map(function(k){ return temp2[k]; });
-
 }
 
 let buildMonthSelect = function () {
     var selectHTML = '';
     selectHTML += '<select>';
     
-    PLANTOES_2.forEach(element => {
-        selectHTML += ' <optgroup Label="' + element.ANO + '">';
-        element.MESES.forEach(el => {
-            selectHTML += ' <option value="' + el.MES + '/' + element.ANO + '">' + el.MES.charAt(0).toUpperCase() + el.MES.slice(1) + '</option>';
+    Object.keys(PLANTOES).forEach(element => {
+        selectHTML += ' <optgroup Label="' + element + '">';
+        Object.keys(PLANTOES[element]).forEach(el => {
+            selectHTML += ' <option value="' + el + '/' + element + '">' + el.charAt(0).toUpperCase() + el.slice(1) + '</option>';
         });
         selectHTML += ' </optgroup>';
     });
     selectHTML += '</select>';
     $('#select-mes').html(selectHTML);
     $( 'select' ).formSelect();
+}
 
+
+let buildHospitalSelect = function (FullList) {
+    FullList.map(e => {
+        delete e.VALOR;
+        delete e.DATA;
+        delete e.COR;
+        return e;
+   })
+
+    let result = [];
+    let map = new Map();
+    for (const item of FullList) {
+        if(!map.has(item.HOSPITAL_ID)){
+            map.set(item.HOSPITAL_ID, true);    // set any value to Map
+            result.push({
+                HOSPITAL_ID: item.HOSPITAL_ID,
+                HOSPITAL: item.HOSPITAL
+            });
+        }
+    }
+    
+    var selectHTML = '';
+    selectHTML += '<select>';
+    selectHTML += '<option value="" selected></option>';
+    result.forEach(element => {
+        selectHTML += ' <option value="' + element.HOSPITAL_ID + '">' + element.HOSPITAL + '</option>';
+    });
+    selectHTML += '</select>';
+    $('#select-hospital').html(selectHTML);
+    $( 'select' ).formSelect();
 }
 
 
