@@ -6,6 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="content" Runat="Server">
 	<div id="header">
         <h1>
+			<%--<div class="svg"></div>--%>
 <%--			<span>Painel de Controle</span>--%>
 			Painel de Controle
         </h1>
@@ -54,7 +55,7 @@
 				<span><b>Relatórios</b></span>
 				<ul>
 					<li><asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Graficos/Listar.aspx"> - Gráficos</asp:HyperLink></li>
-					<li><%--<asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Faturamento/Listar.aspx"> - Faturamento</asp:HyperLink>--%></li>
+					<li><asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Faturamento/Listar.aspx"> - Faturamento</asp:HyperLink></li>
 				</ul>
 			</li>
         </ul>

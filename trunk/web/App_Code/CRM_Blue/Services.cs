@@ -67,6 +67,7 @@ namespace CRM_Blue
 						if (input.action.Equals("LOGIN")) ret = LOGIN(input);
 						if (input.action.Equals("TESTE_CONNECT")) ret = TESTE_CONNECT(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
+						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
 						
 						
@@ -126,6 +127,7 @@ namespace CRM_Blue
 			{
 				lstRetorno.Add(new
 				{
+					HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
 					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
 					VALOR = lstPlantao[i].VALOR,
 					DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
@@ -136,6 +138,29 @@ namespace CRM_Blue
 			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
 			return ret;
 		}
+
+
+		//public static string LOAD_HOSPITAIS(WS_Input ws_input)
+		//{
+		//	//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
+		//	List<PLANTAO> lstPlantao = new PLANTAO_Service().Listar();
+
+		//	List<object> lstRetorno = new List<object>();
+		//	for (int i = 0; i < lstPlantao.Count; i++)
+		//	{
+		//		lstRetorno.Add(new
+		//		{
+		//			HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
+		//			VALOR = lstPlantao[i].VALOR,
+		//			DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
+		//			COR = lstPlantao[i].HOSPITAL.COR
+		//		});
+		//	}
+
+		//	String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstPlantao = lstRetorno });
+		//	return ret;
+		//}
+
 
 		public static string GRAFICO_MES(WS_Input ws_input)
 		{

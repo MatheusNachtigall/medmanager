@@ -46,13 +46,14 @@ body#login > form{vertical-align:top}
 #login input[type='text'],
 #login input[type='password'] {width:220px;background:none;border:none;border-bottom:solid 1px #424241;color:#000;outline:none;box-sizing:border-box;font-size:19px;color:#424241;}
 #login input::placeholder {color:#424241;}
-#login input[type='submit']{background:#63a5dc;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;width:220px;border-radius:20px;margin-top:20px;}
+#login input[type='submit']{background:#26a22fa6;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;width:220px;border-radius:20px;margin-top:20px;}
 
 #login a{font:12px Helvetica, Arial, sans-serif;color:#999;text-decoration:none}
 #login .version{position:absolute;left:0;right:0;bottom:43px;font:12px Helvetica, Arial, sans-serif;color:#ccc;}
 
-#header{position:fixed;top:0px;left:0px;background:#0666B5;height:68px;width:100%;z-index:4;box-shadow:0 0 2px rgba(0,0,0,.4)}
-#header h1{background:url(../Imagens/logo.svg) 20px center no-repeat;padding-left:220px;font-size:20px;display:inline-block;height:40px;position:relative;color:#fff;background-size: auto 90%;}
+#header{position:fixed;top:0px;left:0px;background:#1B5E20;height:68px;width:100%;z-index:4;box-shadow:0 0 2px rgba(0,0,0,.4)}
+/* #header h1 div.svg{background:url(../Imagens/d9737b36a812404a802e9973e801097e.svg) 20px center no-repeat;padding-left:220px;font-size:20px;display:inline-block;height:40px;position:relative;color:#fff;background-size: auto 90%;} */
+#header h1{background:url(../Imagens/vectorpaint.svg) 20px center no-repeat;padding-left:220px;font-size:20px;display:inline-block;height:40px;position:relative;color:#fff;background-size: auto 90%;}
 #header h1 span{display:block;text-transform:uppercase;font-weight:normal;font-size:12px;line-height:10px;padding-top:5px;}
 #header ul{float:right;list-style:none;margin-right:20px}
 #header li{float:left;margin:10px}
@@ -94,7 +95,7 @@ div#content{padding-left:200px;padding-top:70px}
 #title{padding:16px 20px;height:40px}
 #title h1{font:20px Helvetica, Arial, sans-serif;color:#333;margin:0px;padding:10px 0px 0px 0px}
 #title a{float:right;text-decoration:none}
-#title a.adicionar{background:#63a5dc;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:30px;width:130px;padding:10px 0px 0px 0px;margin:0px 0px 0px 10px;border-radius:20px;}
+#title a.adicionar{background:#26a22fa6;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:30px;width:130px;padding:10px 0px 0px 0px;margin:0px 0px 0px 10px;border-radius:20px;}
 #title a.adicionar.proposta{width:180px;}
 #title a.adicionar span{display:inline-block;width:16px;height:16px;margin-right:10px;background:url(../Imagens/sprite.png) -96px 0px no-repeat;position:relative;top:2px}
 #title a.filtrar{background:#666;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:30px;width:100px;padding:10px 0px 0px 0px;margin:0px 0px 0px 10px}
@@ -159,13 +160,13 @@ table .radio{margin-bottom:0;float:none}
 
 .options{padding:10px 0 20px}
 .options.editar{margin:0 20px 0}
-.options .submit{background:#63a5dc;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:0px 20px 0px 20px;border-radius:20px;}
+.options .submit{background:#26a22fa6;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:0px 20px 0px 20px;border-radius:20px;}
 .options .limpar,
 .options .cancelar,
 .options .exportar,
 .bt-grey{background:#a9a9a9;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:0px 20px 0px 20px;border-radius:20px;}
 .options .excluir{background:#f16660;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:0px 20px 0px 20px;border-radius:20px;}
-.options .limpar {border:solid 1px #63a5dc;background:transparent;color:#63a5dc;}
+.options .limpar {border:solid 1px #26a22fa6;background:transparent;color:#26a22fa6;}
 .options .exportar{float:right}
 .bt-grey{padding:10px 25px;height:auto;text-decoration:none}
 .options .submit:hover,
@@ -281,7 +282,7 @@ object {display:none}
 
 .menu-lateral .active {
     font-weight: bold;
-	color:#63a5dc;
+	color:#26a22fa6;
 }
 
 .modal {
@@ -361,5 +362,5 @@ table .vermelha {
 }
 
 
-td a.submit {background:#63a5dc;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:5px 20px;border-radius:20px; text-decoration:none}
+td a.submit {background:#26a22fa6;border:none;font:16px Helvetica, Arial, sans-serif;color:#FFF;font-weight:bold;text-align:center;height:40px;padding:5px 20px;border-radius:20px; text-decoration:none}
 td a.submit:hover {opacity:0.8;filter:alpha(opacity=80)}
