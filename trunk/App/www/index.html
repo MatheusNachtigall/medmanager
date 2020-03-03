@@ -22,7 +22,7 @@
         </div></li>
         <li class="tab side"><a class="waves-effect active" href="#principal">Tela Inicial</a></li>
         <li class="tab side"><a class="waves-effect" href="#adicionar_plantao"><i class="material-icons">add_circle</i>Adicionar Plantão</a></li>
-        <li class="tab side"><a class="waves-effect" href="#portal"><i class="material-icons">show_chart</i>Relatório Mês</a></li>
+        <li class="tab side"><a class="waves-effect" href="#plantoes_detalhes"><i class="material-icons">show_chart</i>Plantões</a></li>
         <li><div class="divider"></div></li>
       <li class="tab no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -42,27 +42,16 @@
       
     <div class="topo-fixo z-depth-1">
         <div class="green darken-4 white-text valign-wrapper">
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons right white-text">menu</i></a>
             <h4 class="titulo">Med Manager</h4>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons left white-text">menu</i></a>
         </div>
-        <!-- <div class="row">
-            <div class="">
-                <ul class="tabs green darken-2">
-                    <li class="tab col s6"><a class="white-text waves-effect" href="#treinamento">Treinamento</a></li>
-                    <li class="tab col s6"><a class="white-text waves-effect" href="#portal">Portal</a></li>
-                </ul>
-            </div>
-        </div> -->
     </div>
+
     <div class="container">
-        
         <div class="section" id="principal">
-            <!-- <div class="center-align">
-                <h5 id="mes-atual"></h5>
-            </div> -->
             <div class="row">
                 <div class="input-field col s12">
-                    <select id="select-mes"></select>
+                    <select class="select-mes"></select>
                 </div>
             </div>
 
@@ -82,67 +71,20 @@
         
 
 
-        <div class="section" id="portal">
-            
+        <div class="section" id="plantoes_detalhes">
             <div class="row">
-                <div class="col s12 m6">
-                    <div class="card light-green lighten-3">
-                        <div class="card-content">
-                            <span class="card-title fw700">10/02/2020</span>
-                            <a class="btn-floating waves-effect waves-light green darken-4"><i class="material-icons">mode_edit</i></a>
-                            <div class="row"> 
-                                <p class="col s6">Candiota</p>
-                                <p class="col s6">R$1.600,00</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="input-field col s12">
+                    <select class="select-mes"></select>
                 </div>
             </div>
+
+            <div class="plantoes_list"></div>
             
-            <div class="row">
-                <div class="col s12 m6">
-                    <div class="card light-green lighten-3">
-                        <div class="card-content">
-                            <span class="card-title fw700">11/02/2020</span>
-                            <a class="btn-floating waves-effect waves-light green darken-4"><i class="material-icons">mode_edit</i></a>
-                            <div class="row"> 
-                                <p class="col s6">Pinheiro Machado</p>
-                                <p class="col s6">R$1.600,00</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+           
             
-            <div class="row">
-                <div class="col s12 m6">
-                    <div class="card light-green lighten-3">
-                        <div class="card-content">
-                            <span class="card-title fw700">12/02/2020</span>
-                            <a class="btn-floating waves-effect waves-light green darken-4"><i class="material-icons">mode_edit</i></a>
-                            <div class="row"> 
-                                <p class="col s6">UPA</p>
-                                <p class="col s6">R$1.600,00</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col s12 m6">
-                    <div class="card light-green lighten-3">
-                        <div class="card-content">
-                            <span class="card-title fw700">10/02/2020</span>
-                            <a class="btn-floating waves-effect waves-light green darken-4"><i class="material-icons">mode_edit</i></a>
-                            <div class="row"> 
-                                <p class="col s6">Candiota</p>
-                                <p class="col s6">R$1.600,00</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    
+               
             
             
         </div>
@@ -157,34 +99,32 @@
                             <h5 class="black-text">Adicionar Plantão</h5>
                             <br>
                         </div>
-    
-                           
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <select id="select-hospital"></select>
+                                    <select id="select-hospital" name="select-hospital"></select>
                                     <label>Hospital:</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <input id="data_plantao" type="text" class="date">
+                                    <input type="date" name="data_plantao" id="data_plantao">
                                     <label for="data_plantao">Data Plantão:</label>
                                 </div>
                                 <div class="input-field col s6">
-                                    <input id="data_pagamento" type="text" class="date">
+                                    <input type="date" name="data_pagamento" id="data_pagamento">
                                     <label for="data_pagamento">Data Pagamento:</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s6">
                                     <label>
-                                        <input type="checkbox" />
+                                        <input id='CNPJ' type="checkbox" />
                                         <span>CNPJ</span>
                                     </label>
                                 </div>
                                 <div class="input-field col s6">
                                     <label>
-                                        <input id="indeterminate-checkbox" type="checkbox" />
+                                        <input id='INSS' type="checkbox" />
                                         <span>INSS</span>
                                     </label>
                                 </div>
@@ -192,7 +132,7 @@
                             <br>
                             <br>
                             <div class="input-field col s12">
-                                <input id="valor" type="text" class="money">
+                                <input id="valor" name="valor" type="text" class="money">
                                 <label for="valor">Valor:</label>
                             </div>
                             <div class="center-align col s12">
@@ -207,10 +147,24 @@
                         <i class="material-icons right">clear_all</i>
                     </a>
                 </div>
+
+
+                <div id="modal-inserir-plantao" class="modal">
+                    <div class="modal-content">
+                        <h5 >Confirme seus dados:</h4>
+                        <p>Hospital: <span id='modal-hospital'></span></p>
+                        <p>Data Plantão: <span id='modal-data-plantao'></span></p>
+                        <p>Data Pagamento: <span id='modal-data-pagamento'></span></p>
+                        <p>INSS: <span id='modal-INSS'></span></p>
+                        <p>CNPJ: <span id='modal-CNPJ'></span></p>
+                        <p>Valor: <span id='modal-valor'></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" id="modal-btn-voltar" class="modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
+                        <a href="#!" id="modal-btn-confirmar" class="modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
+                    </div>
+                </div>
             </div>
-
-
-
     </div>
        
 
@@ -220,12 +174,11 @@
 
 
 
-    <script src="js/plugins.js"></script>
     <script src="js/ws.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/materialize.min.js"></script>
-    <script src="js/vendor/jquery.mask.min.js"></script>
-    <script src="js/chart.js"></script>
+    <script src="js/plugins/jquery.min.js"></script>
+    <script src="js/plugins/materialize.min.js"></script>
+    <script src="js/plugins/jquery.mask.min.js"></script>
+    <script src="js/plugins/chart.js"></script>
     <script src="js/charts_Data.js"></script>
     <script src="js/requisicoes.js"></script>
     <script src="js/app.js"></script>

@@ -34,7 +34,7 @@ body{
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 2;
+    z-index: 999;
 }
 
 .section{
@@ -183,4 +183,25 @@ a.btn-floating.waves-effect.waves-light{
   position: absolute;
   top: 20px;
   right: 20px;
+}
+
+
+
+.fixed-action-btn.direction-left ul li,
+.fixed-action-btn.direction-right ul li {
+  margin: 7.5px 5px 0 0 !important;
+}
+
+span.error-info{
+  color: red;
+}
+
+#modal-inserir-plantao h5, 
+#modal-inserir-plantao a, 
+#modal-inserir-plantao p {
+  font-weight: 700;
+}
+
+#modal-inserir-plantao p span {
+  font-weight: 400;
 }

@@ -64,13 +64,12 @@ namespace CRM_Blue
 				{
 					try
 					{
-						if (input.action.Equals("LOGIN")) ret = LOGIN(input);
+						if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
 						if (input.action.Equals("TESTE_CONNECT")) ret = TESTE_CONNECT(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
 						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
-						
-						
+						//if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
 					}
 					catch (Exception ex)
 					{
@@ -96,20 +95,8 @@ namespace CRM_Blue
 			}
 		}
 
-		
 
-		public class LOGIN_DATA
-		{
-			public string cpf { get; set; }
-		}
-		public static string LOGIN(WS_Input ws_input)
-		{
-			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
-
-			//String ret = new JavaScriptSerializer().Serialize(new { status = (item != null) ? 1 : 0 });
-			//return ret;
-			return "";
-		}
+        
 		public static string TESTE_CONNECT(WS_Input ws_input)
 		{
 			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
@@ -127,11 +114,13 @@ namespace CRM_Blue
 			{
 				lstRetorno.Add(new
 				{
-					HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
+                    PLANTAO_ID = lstPlantao[i].PLANTAO_ID,
+                    HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
 					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
 					VALOR = lstPlantao[i].VALOR,
 					DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
-					COR = lstPlantao[i].HOSPITAL.COR
+					COR = lstPlantao[i].HOSPITAL.COR,
+                    RECEBIDO = lstPlantao[i].RECEBIDO
 				});
 			}
 
@@ -188,9 +177,50 @@ namespace CRM_Blue
 			return ret;
 		}
 
-	}
 
-	public class WS_Input
+
+
+        public class INSERIR_PLANTAO_DATA
+        {
+            public int HOSPITAL_ID { get; set; }
+            public string DATA_PLANTAO { get; set; }
+            public string DATA_PAGAMENTO { get; set; }
+            public string VALOR { get; set; }
+            public bool INSS { get; set; }
+            public bool CNPJ { get; set; }
+        }
+        public static string INSERIR_PLANTAO(WS_Input ws_input)
+        {
+            INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
+            PLANTAO plantao = new PLANTAO();
+            String ret = "";
+
+
+            try
+            {
+                plantao.HOSPITAL_ID = input.HOSPITAL_ID;
+                plantao.VALOR = Convert.ToDecimal(input.VALOR);
+                plantao.DATA_PLANTAO = DateTime.ParseExact(input.DATA_PLANTAO, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                plantao.DATA_PAGAMENTO = DateTime.ParseExact(input.DATA_PAGAMENTO, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                plantao.DATA_CADASTRO = DateTime.Now;
+                plantao.INSS = input.INSS;
+                plantao.CNPJ = input.CNPJ;
+
+                PLANTAO_Service pService = new PLANTAO_Service();
+                pService.Inserir(plantao);
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
+            }
+            catch (Exception)
+            {
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
+            }
+            //String ret = new JavaScriptSerializer().Serialize(new { status = (item != null) ? 1 : 0 });
+            return ret;
+            //return "";
+        }
+    }
+
+    public class WS_Input
 	{
 		public int ambiente { get; set; }
 		public string action { get; set; }
