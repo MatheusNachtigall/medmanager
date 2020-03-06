@@ -69,6 +69,8 @@ namespace CRM_Blue
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
 						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
+						if (input.action.Equals("MARCAR_PLANTAO_RECEBIDO")) ret = MARCAR_PLANTAO_RECEBIDO(input);
+						if (input.action.Equals("EXCLUIR_PLANTAO")) ret = EXCLUIR_PLANTAO(input);
 						//if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
 					}
 					catch (Exception ex)
@@ -177,9 +179,6 @@ namespace CRM_Blue
 			return ret;
 		}
 
-
-
-
         public class INSERIR_PLANTAO_DATA
         {
             public int HOSPITAL_ID { get; set; }
@@ -194,8 +193,6 @@ namespace CRM_Blue
             INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
             PLANTAO plantao = new PLANTAO();
             String ret = "";
-
-
             try
             {
                 plantao.HOSPITAL_ID = input.HOSPITAL_ID;
@@ -214,9 +211,53 @@ namespace CRM_Blue
             {
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
             }
-            //String ret = new JavaScriptSerializer().Serialize(new { status = (item != null) ? 1 : 0 });
             return ret;
-            //return "";
+        }
+
+        public class MARCAR_PLANTAO_RECEBIDO_DATA
+        {
+            public int HOSPITAL_ID { get; set; }
+        }
+        public static string MARCAR_PLANTAO_RECEBIDO(WS_Input ws_input)
+        {
+            MARCAR_PLANTAO_RECEBIDO_DATA input = new JavaScriptSerializer().Deserialize<MARCAR_PLANTAO_RECEBIDO_DATA>(ws_input.data);
+            PLANTAO_Service pService = new PLANTAO_Service();
+            PLANTAO plantao = pService.Carregar(input.HOSPITAL_ID);
+            String ret = "";
+            try
+            {
+                plantao.RECEBIDO = true;
+                pService.Atualizar(plantao);
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
+            }
+            catch (Exception)
+            {
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = false , motivo = "Não foi possível atualizar o plantão."});
+            }
+            return ret;
+        }
+
+        public class EXCLUIR_PLANTAO_DATA
+        {
+            public int HOSPITAL_ID { get; set; }
+        }
+        public static string EXCLUIR_PLANTAO(WS_Input ws_input)
+        {
+            MARCAR_PLANTAO_RECEBIDO_DATA input = new JavaScriptSerializer().Deserialize<MARCAR_PLANTAO_RECEBIDO_DATA>(ws_input.data);
+            PLANTAO_Service pService = new PLANTAO_Service();
+            PLANTAO plantao = pService.Carregar(input.HOSPITAL_ID);
+            String ret = "";
+            try
+            {
+                plantao.RECEBIDO = true;
+                pService.Excluir(plantao);
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
+            }
+            catch (Exception)
+            {
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = false, motivo = "Não foi possível excluir o plantão." });
+            }
+            return ret;
         }
     }
 

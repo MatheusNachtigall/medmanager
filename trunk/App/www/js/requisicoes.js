@@ -41,3 +41,35 @@ let REQ_INSERIR_PLANTAO = function () {
         }
     })
 }
+
+let REQ_MARCAR_PLANTAO_RECEBIDO = function (Hosp_ID) {
+    console.log('To aqui: ', Hosp_ID);
+    
+    WS.InserirRequisicao('MARCAR_PLANTAO_RECEBIDO', {
+        HOSPITAL_ID:    Hosp_ID,
+    }, function(ret) {
+        console.log(ret);
+        
+        if (ret.sucesso){
+            M.toast({html: 'Pagamento inserido!', classes: 'rounded green'});
+            LOAD_PLANTOES();
+        } else {
+            M.toast({html: 'Ocorreu um erro!', classes: 'rounded red'});
+            //toast com falha e motivo da falha
+        }
+    })
+}
+
+let REQ_EXCLUIR_PLANTAO = function (Hosp_ID) {
+    WS.InserirRequisicao('EXCLUIR_PLANTAO', {
+        HOSPITAL_ID:    Hosp_ID,
+    }, function(ret) {
+        if (ret.sucesso){
+            M.toast({html: 'Plantão Excluido!', classes: 'rounded green'});
+            LOAD_PLANTOES();
+        } else {
+            M.toast({html: 'Ocorreu um erro!', classes: 'rounded red'});
+            //toast com falha e motivo da falha
+        }
+    })
+}

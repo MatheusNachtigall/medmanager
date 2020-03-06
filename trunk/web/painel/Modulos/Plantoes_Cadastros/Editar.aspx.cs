@@ -84,46 +84,15 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Editar : System.Web.UI.P
 	protected void btnExcluir_Click(object sender, EventArgs e)
 	{
 
-		//if (!String.IsNullOrEmpty(Request.QueryString["id"]))
-		//{
-		//	PLANTAO_Service service = new PLANTAO_Service();
-		//	PLANTAO filtro = new PLANTAO();
-		//	filtro.PLANTAO_ID = Convert.ToInt32(Request.QueryString["id"]);
-		//	bool error = false;
-		//	string msgError = "Erro: Ainda existem ";
-		//	List<string> errList = new List<string>();
-
-		//	List<FATURAMENTO> faturamentos = new FATURAMENTO_Service().Listar(new FATURAMENTO() { PLANTAO_ID = filtro.PLANTAO_ID });
-		//	if(faturamentos.Count > 0)
-		//	{
-		//		error = true;
-		//		errList.Add("Faturamentos");
-		//	}
-
-		//	if(error)
-		//	{
-		//		msgError += String.Join(" ,", errList.ToArray());
-		//		msgError += " ligados a esse PLANTAO.";
-
-		//		int place = msgError.LastIndexOf(",");
-		//		if (place != -1)
-		//		{
-		//			msgError = msgError.Remove(place, 1).Insert(place, "e ");
-		//		}
-
-		//		msgFeedbackExcluir.Text = msgError;
-		//		phFeedbackExcluir.Visible = true;
-		//		msgFeedbackExcluir.CssClass += " error";
-		//		return;
-		//	}
-		//	else
-		//	{
-		//		service.Excluir(filtro);
-		//		Response.Redirect("Listar.aspx?s=1");
-		//	}
-
-		//}
-	}
+        if (!String.IsNullOrEmpty(Request.QueryString["id"]))
+        {
+            PLANTAO_Service service = new PLANTAO_Service();
+            PLANTAO filtro = new PLANTAO();
+            filtro.PLANTAO_ID = Convert.ToInt32(Request.QueryString["id"]);
+            service.Excluir(filtro);
+            Response.Redirect("Listar.aspx?s=1");
+        }
+    }
 	#endregion
 
 	#region Métodos

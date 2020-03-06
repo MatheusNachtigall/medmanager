@@ -295,6 +295,7 @@ object {display:none}
     margin-left: -250px;
     padding: 25px;
     background-color: #FFFFFF;
+    z-index: 2;
 }
 
 .modal .text-modal {
@@ -318,7 +319,7 @@ object {display:none}
     text-align: center;
 }
 
-.overlay1 {
+.overlay {
     top: 0;
     left: 0;
     background-color: #000;
@@ -327,6 +328,7 @@ object {display:none}
     width: 100%;
     height: 100%;
     position: absolute;
+    z-index: 1;
 }
 
 table .vermelha {

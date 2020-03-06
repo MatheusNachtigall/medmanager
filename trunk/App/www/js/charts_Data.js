@@ -13,12 +13,13 @@ let generateMonthlyPieChart = function (HospitaisDistintos, dataSomas, CoresDist
 		options: {
 			responsive: true,
 			legend: {
+                onClick: (e) => e.stopPropagation(),
 				position: 'right',
 				labels: {
 					boxWidth: 15,
 					fontSize: 12,
 					fontStyle: 'bold'
-				}
+                },
 			}
 		}
 	};
