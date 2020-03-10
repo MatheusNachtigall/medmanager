@@ -2,50 +2,96 @@ var TESTE;
 var PLANTOES = null;
 var PLANTOES_2 = null;
 var LP = null;
+// Dropzone.autoDiscover = false;
 
-$(document).ready(function(){
-    $('.tabs').tabs();
-    $('.sidenav').sidenav({
-        draggable: true
-    });
-    $('.modal').modal();
-
-    $(".dropdown-trigger").dropdown({
-        hover: false
-    });
-    $('.collapsible').collapsible();
-    $('.date').mask('00/00/0000', { placeholder: "__/__/____" });
+// var processPageLoad = function() {
+$(function() {
+    startMaterialize();
+    
     $('.money').mask('#.##0,00', { reverse: true });
     
-    LOAD_PLANTOES();
+    REQ_LOAD_PLANTOES();
     
     const date = new Date(); 
     const month = date.toLocaleString('default', { month: 'long' }).toString().toUpperCase();
-    //month = date.toLocaleString('default', { month: 'short', year: 'numeric' }).toString().replace(' de ','/').toUpperCase();
-    
     $('.select-mes').val(month.toLowerCase());
     $( 'select' ).formSelect();
+    startDropzone();
     
-    //GET_GRAFICO_MES(month);
+    $('#frm_adicionar_plantao').submit(function() {
+        validatePlantao()
+    });
 
-    
-    
+    $('#modal-inserir-plantao .modal-btn-confirmar').click(function() {
+        PREP_INSERIR_PLANTAO();
+    });
+
+    $("#btn-limpar").on("click", function () {
+        clearInserirPlantaoFields();
+    });
+        
+    $('#modal-confirmar-recebimento .modal-btn-confirmar').click(function() {
+        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+        REQ_MARCAR_PLANTAO_RECEBIDO(plantao_id);
+    });
+
+    $('#modal-editar-plantao .modal-btn-confirmar').click(function() {
+        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+        console.log("Devo editar o plantao com id: ", plantao_id);
+    });
+
+    $('#modal-confirmar-exclusao .modal-btn-confirmar').click(function() {
+        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+        REQ_EXCLUIR_PLANTAO(plantao_id);
+    });
+
+    $('#modal-download .modal-btn-confirmar').click(function() {
+        console.log("Devo baixar o arquivo");
+    });
+
+    $('#principal .select-mes').on('change', function(){
+        let select_value = $(this).val();
+        let lstPlantoes = PLANTOES[select_value.split('/')[1]][select_value.split('/')[0]];
+        window.myPie.destroy();
+        buildChartAndGraph(lstPlantoes)
+    });
+
+    $('#plantoes_detalhes .select-mes').on('change', function(){
+        let month = $(this).val().split('/')[0];
+        let plantao_list = $('.plantoes_list').children();
+        
+        for (var i = 0; i < plantao_list.length; i++) {
+            if (month == ""){
+                $(plantao_list[i]).show();
+            } else {
+                var plantao_mes = $(plantao_list[i]).find('.plantao-info');
+                var m = new Date(plantao_mes.data('data')).toLocaleString('default', { month: 'long'}).toString();
+                if (m == month){
+                    $(plantao_list[i]).show();
+                } else {
+                    $(plantao_list[i]).hide();
+                }
+            }
+        };
+    });
+
+
 });
 
-$("#btn-limpar").on("click", function () {
-    $('#select-hospital').val("");
-    $( 'select' ).formSelect();
-    $('#data_plantao').val('');
-    $('#data_pagamento').val('');
-    $('#data_plantao').val('');
-    $('input[type="checkbox"]').prop("checked",false)
-    $('#valor').val('');
 
-});
+
+let startMaterialize = function () {
+    M.AutoInit();
+    $('.sidenav').sidenav({
+        draggable: true
+    });
+    $('.tabs').tabs();
+};
+
+
 
 
 let arrangePlantoes = function (lstPlantoes) {
-    
     PLANTOES = lstPlantoes.reduce(function (r, o) {
         var m = o.DATA.split(('-'))[2];
         if (r[m]){
@@ -56,7 +102,6 @@ let arrangePlantoes = function (lstPlantoes) {
         return r;
     }, {});
     var temp = Object.keys(PLANTOES).map(function(k){ return PLANTOES[k]; });
-    
     
     temp.forEach(element => {
         var mes = element.reduce(function (r, o) {
@@ -91,6 +136,7 @@ let buildMonthSelect = function () {
 
 
 let buildHospitalSelect = function (FullList) {
+    console.log('6');
     var HospitalList = [];
     FullList.map(e => HospitalList.push({HOSPITAL_ID: e.HOSPITAL_ID, HOSPITAL: e.HOSPITAL}))
 
@@ -114,7 +160,6 @@ let buildHospitalSelect = function (FullList) {
     $('#select-hospital').html(selectHTML);
     $( 'select' ).formSelect();
     $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
-
 }
 
 
@@ -137,7 +182,7 @@ let buildDetailedPlantaoList = function () {
         HTML += '                       <li><a class="btn-editar btn-small btn-floating yellow darken-1"><i class="material-icons">mode_edit</i></a></li>';
         HTML += '                       <li><a class="btn-excluir btn-small btn-floating red"><i class="material-icons">delete</i></a></li>';
         // if (!el.NOTA != '') {
-            HTML += '                       <li><a class="btn-download btn-small btn-floating blue"><i class="material-icons">file_download</i></a></li>';
+            HTML += '                       <li><a class="btn-download btn-small btn-floating blue"><i class="material-icons">attach_file</i></a></li>';
         // }
         HTML += '                   </ul>';
         HTML += '               </div>';
@@ -174,7 +219,6 @@ let buildDetailedPlantaoList = function () {
         $('#modal-confirmar-recebimento .modal-valor').html($(plantao_info).data('valor'));
         $('#modal-confirmar-recebimento').modal('open')
     });
-
     
     $('.btn-editar').click(function() {
         let plantao_info =  $(this).closest(".plantao-info")
@@ -193,45 +237,19 @@ let buildDetailedPlantaoList = function () {
         $('#modal-confirmar-exclusao .modal-valor').html($(plantao_info).data('valor'));
         $('#modal-confirmar-exclusao').modal('open')
     });
+
     $('.btn-download').click(function() {
         let plantao_info =  $(this).closest(".plantao-info")
         $('#modal-download .modal-id').html($(plantao_info).data('id'));
-        $('#modal-download .modal-hospital').html($(plantao_info).data('hospital'));
+        // $('#modal-download .modal-hospital').html($(plantao_info).data('hospital'));
         $('#modal-download .modal-data-plantao').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
-        $('#modal-download .modal-valor').html($(plantao_info).data('valor'));
-        $('#modal-download').modal('open')
+        // $('#modal-download .modal-valor').html($(plantao_info).data('valor'));
+        // $('#modal-download').modal('open')
+        REQ_GET_ANEXOS($(plantao_info).data('id'));
     });
-
 }
 
-
-$('#principal .select-mes').on('change', function(){
-    let select_value = $(this).val();
-    let lstPlantoes = PLANTOES[select_value.split('/')[1]][select_value.split('/')[0]];
-    window.myPie.destroy();
-    buildChartAndGraph(lstPlantoes)
-});
-
-$('#plantoes_detalhes .select-mes').on('change', function(){
-    let month = $(this).val().split('/')[0];
-    let plantao_list = $('.plantoes_list').children();
-    
-    for (var i = 0; i < plantao_list.length; i++) {
-        if (month == ""){
-            $(plantao_list[i]).show();
-        } else {
-            var plantao_mes = $(plantao_list[i]).find('.plantao-info');
-            var m = new Date(plantao_mes.data('data')).toLocaleString('default', { month: 'long'}).toString();
-            if (m == month){
-                $(plantao_list[i]).show();
-            } else {
-                $(plantao_list[i]).hide();
-            }
-        }
-    };
-});
-
-$('#frm_adicionar_plantao').submit(function() {
+let validatePlantao = function () {
     var valid = true;
     $("#select-hospital").removeClass('invalid');
     $("#data_plantao").removeClass('invalid');
@@ -260,7 +278,6 @@ $('#frm_adicionar_plantao').submit(function() {
         valid = false;
     }
     if (valid) {
-        // $('.modal-inserir-plantao')
         $('#modal-inserir-plantao .modal-hospital').html($("#select-hospital option:selected").html());
         $('#modal-inserir-plantao .modal-data-plantao').html($("#data_plantao").val().replace(/(\d\d\d\d)-(\d\d)-(\d\d)/,'$3/$2/$1'));
         $('#modal-inserir-plantao .modal-data-pagamento').html($("#data_pagamento").val().replace(/(\d\d\d\d)-(\d\d)-(\d\d)/,'$3/$2/$1'));
@@ -272,27 +289,92 @@ $('#frm_adicionar_plantao').submit(function() {
         $('.error:first').focus();
     }
     return false;
-});
-        
-$('#modal-inserir-plantao .modal-btn-confirmar').click(function() {
-    REQ_INSERIR_PLANTAO();
-});
+}
 
-$('#modal-confirmar-recebimento .modal-btn-confirmar').click(function() {
-    let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
-    REQ_MARCAR_PLANTAO_RECEBIDO(plantao_id);
-});
-$('#modal-editar-plantao .modal-btn-confirmar').click(function() {
-    // REQ_INSERIR_PLANTAO();
-    let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+let clearInserirPlantaoFields = function () {
+    $('#select-hospital').val("");
+    $( 'select' ).formSelect();
+    $('#data_plantao').val('');
+    $('#data_pagamento').val('');
+    $('#data_plantao').val('');
+    $('input[type="checkbox"]').prop("checked",false)
+    $('#valor').val('');
+    Dropzone.forElement("#dragAndDropField").removeAllFiles();
+    $('#trash-can').addClass('hidden');
+    $('.dz-default.dz-message').css('display','block');
+}
+
+
+
+
+var startDropzone = function(){     
+    $("#dragAndDropField").dropzone({
+        url: WS_HTTP_URL,
+        autoProcessQueue: false,
+        thumbnailWidth: 115,
+        thumbnailHeight: 115,
+        dictDefaultMessage: "Clique aqui " + (IsMobile ? "" : "ou arraste e solte ") + "para anexar arquivos.",
+        parallelUploads: 100,
+        maxFiles: 100,
+        init : function() {
+            var myDropzone = this;
+            this.on("addedfiles", function(files) {
+                $('#trash-can').removeClass('hidden');
+                if (IsMobile) {
+                    $('.dz-default.dz-message').css('display','none');
+                } 
+            });
+        },
+        accept: function(file, done) {
+            if (!validExtension(file.name)) {
+              done("Formato de arquivo inválido");
+            }
+            else { done(); }
+        }
+    });
+
+    $("#trash-can").droppable({
+        drop: function ( event, ui) {
+            var p1 = new Promise(function(resolve, reject) {
+                $(ui.draggable).remove();
+                resolve();
+            });
+            p1.then(function () {
+                if (Dropzone.forElement("#dragAndDropField").files.length == 0){
+                    $('#trash-can').addClass('hidden');
+                    $('.dz-default.dz-message').css('display','block');
+                }
+            })
+        }
+    });
     
-    console.log("Devo editar o plantao com id: ", plantao_id);
-    
-});
-$('#modal-confirmar-exclusao .modal-btn-confirmar').click(function() {
-    let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
-    REQ_EXCLUIR_PLANTAO(plantao_id);
-});
-$('#modal-download .modal-btn-confirmar').click(function() {
-    console.log("Devo baixar o arquivo");
-});
+    $("#dragAndDropField").sortable({
+        items:'.dz-preview',
+        cursor: 'move',
+        opacity: 0.5,
+        containment: '#dragAndDropField',
+        distance: 20,
+        tolerance: 'pointer',
+        connectWith: "#trash-can",
+        stop: function () {
+            var newQueue = [];
+            var queue = dragAndDropField.dropzone.files;
+            $('#dragAndDropField .dz-preview .dz-filename [data-dz-name]').each(function (count, el) {           
+                var name = el.innerHTML;
+                queue.forEach(function(file) {
+                   if (file.name === name) {
+                        newQueue.push(file);
+                   }
+                });
+            });
+            dragAndDropField.dropzone.files = newQueue;
+        }
+    });
+
+    function validExtension(fileName) {
+        let exts = ['.JPG', '.JPEG', '.PNG', '.DIB', '.WEBP', '.JPEG', '.SVGZ', '.GIF', '.ICO', '.SVG', '.TIF', '.XBM', '.BMP', '.JFIF', '.PJPEG', '.PJP', '.TIFF',
+                    '.MP4', '.M4V', '.OGV', '.MPEG', '.MPG', '.WMV', '.MOV', '.OGM', '.WEBM', '.ASX', '.AVI',
+                    '.PDF']
+        return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName.toUpperCase());
+    }
+}

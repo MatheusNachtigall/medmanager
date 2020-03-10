@@ -14,6 +14,7 @@ namespace CRM_Blue.Entity
         private String _nOME;
         private String _eMAIL;
         private String _sENHA;
+        private Int32? _tIPO;
 
         public Int32? USUARIO_ID
         {
@@ -37,6 +38,12 @@ namespace CRM_Blue.Entity
         {
             get { return _sENHA; }
             set { _sENHA = value; }
+        }
+
+        public Int32? TIPO
+        {
+            get { return _tIPO; }
+            set { _tIPO = value; }
         }
 
         public USUARIO()

@@ -14,9 +14,7 @@ using CRM_Blue.ADO;
 using CRM_Blue.Entity;
 using CRM_Blue.Enumerator;
 using CRM_Blue.Service;
-
-
-
+using System.IO;
 
 namespace CRM_Blue
 {
@@ -65,7 +63,7 @@ namespace CRM_Blue
 					try
 					{
 						if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
-						if (input.action.Equals("TESTE_CONNECT")) ret = TESTE_CONNECT(input);
+						if (input.action.Equals("GET_ANEXOS")) ret = GET_ANEXOS(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
 						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
@@ -98,12 +96,22 @@ namespace CRM_Blue
 		}
 
 
-        
-		public static string TESTE_CONNECT(WS_Input ws_input)
+        public class GET_ANEXOS_DATA
+        {
+            public int PLANTAO_ID { get; set; }
+        }
+        public static string GET_ANEXOS(WS_Input ws_input)
 		{
-			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
+            GET_ANEXOS_DATA input = new JavaScriptSerializer().Deserialize<GET_ANEXOS_DATA>(ws_input.data);
 
-			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
+            List<ANEXO> lstAnexo = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID }, ANEXO_Ordem.ORDEM, OrdemTipo.Ascendente);
+            List<object> lstRetorno = new List<object>();
+            for (int i = 0; i < lstAnexo.Count; i++)
+            {
+                lstRetorno.Add(lstAnexo[i].ARQUIVO);
+            }
+
+            String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstAnexo = lstRetorno });
 			return ret;
 		}
 		public static string LOAD_PLANTOES(WS_Input ws_input)
@@ -187,6 +195,7 @@ namespace CRM_Blue
             public string VALOR { get; set; }
             public bool INSS { get; set; }
             public bool CNPJ { get; set; }
+            public string[] MEDIA { get; set; }
         }
         public static string INSERIR_PLANTAO(WS_Input ws_input)
         {
@@ -204,12 +213,80 @@ namespace CRM_Blue
                 plantao.CNPJ = input.CNPJ;
 
                 PLANTAO_Service pService = new PLANTAO_Service();
-                pService.Inserir(plantao);
+                plantao = pService.Inserir(plantao);
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
             }
             catch (Exception)
             {
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
+            }
+
+
+            if (input.MEDIA != null)
+            {
+                if (input.MEDIA.Length > 0)
+                {
+                    for (int i_media = 0; i_media < input.MEDIA.Length; i_media++)
+                    {
+                        //TMP_<ID>_<ORDEM>_<FILENAME>
+                        string ext = Path.GetExtension(input.MEDIA[i_media]).ToUpper();
+                        int sizeToRemove = 4 ; // 'TMP_'
+                        string FileName = input.MEDIA[i_media].Remove(0, sizeToRemove); //<ORDEM>_<FILENAME>.JPG
+                        int anexo_ordem = Int32.Parse(FileName.Substring(0, FileName.IndexOf("_")));
+                        FileName = FileName.Remove(0, (FileName.IndexOf("_")+1)); //<FILENAME>.JPG
+                        //string newFileName = String.Concat(plantao.PLANTAO_ID.ToString(), "_", tempFileName);
+                        int anexo_tipo = 0;
+                        string temp_path = HttpContext.Current.Server.MapPath("~/Uploads/");
+                        string path = String.Concat(HttpContext.Current.Server.MapPath("~/Uploads/"), plantao.PLANTAO_ID, '/');
+                        try
+                        {
+                            if (!Directory.Exists(path))
+                            {
+                                Directory.CreateDirectory(path);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError.GravarErro("Creating Directory: ", ex);
+                        }
+
+                        //TODO: CRIAR UMA PASTA PARA CADA USUARIO E DEPOIS UMA PASTA PARA CADA PLANTAO
+                        if (".JPG .JPEG .PNG .DIB .WEBP .JPEG .SVGZ .GIF .ICO .SVG .TIF .XBM .BMP .JFIF .PJPEG .PJP .TIFF".IndexOf(ext) != -1)
+                        {
+                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Imagem/");
+                            anexo_tipo = 1;
+                        }
+                        if (".MP4 .M4V .OGV .MPEG .MPG .WMV .MOV .OGM .WEBM .ASX .AVI".IndexOf(ext) != -1)
+                        {
+                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Video/");
+                            anexo_tipo = 2;
+                        }
+                        if (".PDF".IndexOf(ext) != -1)
+                        {
+                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Pdf/");
+                            anexo_tipo = 3;
+                        }
+
+                        if (File.Exists(String.Concat(temp_path, input.MEDIA[i_media])))
+                        {
+                            try
+                            {
+                                File.Move(String.Concat(temp_path, input.MEDIA[i_media]), String.Concat(path, FileName));
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError.GravarErro("Saving FILE: ", ex);
+                            }
+                        }
+
+                        ANEXO anexo = new ANEXO();
+                        anexo.PLANTAO_ID = plantao.PLANTAO_ID;
+                        anexo.TIPO = anexo_tipo;
+                        anexo.ARQUIVO = FileName;
+                        anexo.ORDEM = anexo_ordem;
+                        new ANEXO_Service().Inserir(anexo);
+                    }
+                }
             }
             return ret;
         }

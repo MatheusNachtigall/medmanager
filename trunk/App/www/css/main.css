@@ -254,3 +254,11 @@ body{
   height: 100vh;
   background: #f2f2f2
 } */
+
+
+form .trash-can{
+  display: block; margin-top: 5px; padding: 0 16px; text-align: center; font-weight: 600; line-height: 48px; border-radius: 8px; width: 100%; text-decoration: none; color: #75AE50; border: 1px solid #75AE50; box-sizing: border-box; overflow: hidden; text-overflow: ellipsis;
+}
+
+#trash-can,
+#trash-can a { margin-top: 0 }

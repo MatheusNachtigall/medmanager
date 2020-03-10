@@ -44,18 +44,16 @@
 					<li><asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/painel/Modulos/INSS_Relatorios/Listar.aspx"> - Relatórios</asp:HyperLink></li>
 				</ul>
 			</li>
-			<%--<li>
-				<span><b>Projetos</b></span>
-				<ul>
-					<li><asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/painel/Modulos/Projetos_Cadastros/Listar.aspx"> - Cadastros</asp:HyperLink></li>
-					<li><asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/painel/Modulos/Projetos_Faturamentos/Listar.aspx"> - Faturamentos</asp:HyperLink></li>
-				</ul>
-			</li>--%>
 			<li>
 				<span><b>Relatórios</b></span>
 				<ul>
 					<li><asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Graficos/Listar.aspx"> - Gráficos</asp:HyperLink></li>
-					<li><asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="~/painel/Modulos/Relatorios_Faturamento/Listar.aspx"> - Faturamento</asp:HyperLink></li>
+				</ul>
+			</li>
+			<li>
+				<span><b>Usuários</b></span>
+				<ul>
+					<li><asp:HyperLink ID="HyperLink8" runat="server" NavigateUrl="~/painel/Modulos/Usuarios_Cadastros/Listar.aspx"> - Cadastro</asp:HyperLink></li>
 				</ul>
 			</li>
         </ul>

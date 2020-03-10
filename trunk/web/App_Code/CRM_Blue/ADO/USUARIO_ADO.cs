@@ -45,6 +45,10 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@SENHA", DbType.String, filtro.SENHA);
                 }
+                if (filtro.TIPO != null)
+                {
+                    db.AddInParameter(cmd, "@TIPO", DbType.Int32, filtro.TIPO);
+                }
             }
             DataTable dataTable = db.ExecuteDataTable(cmd);
 
@@ -108,6 +112,10 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@SENHA", DbType.String, filtro.SENHA);
                 }
+                if (filtro.TIPO != null)
+                {
+                    db.AddInParameter(cmd, "@TIPO", DbType.Int32, filtro.TIPO);
+                }
             }
 
             DataTable dataTable = db.ExecuteDataTable(cmd);
@@ -140,6 +148,7 @@ namespace CRM_Blue.ADO
             db.AddInParameter(cmd, "@NOME", DbType.String, item.NOME);
             db.AddInParameter(cmd, "@EMAIL", DbType.String, item.EMAIL);
             db.AddInParameter(cmd, "@SENHA", DbType.String, item.SENHA);
+            db.AddInParameter(cmd, "@TIPO", DbType.Int32, item.TIPO);
             db.ExecuteNonQuery(cmd);
             item.USUARIO_ID = (Int32)db.GetParameterValue(cmd, "@USUARIO_ID");
             cmd.Connection.Close();
@@ -157,6 +166,7 @@ namespace CRM_Blue.ADO
             db.AddInParameter(cmd, "@NOME", DbType.String, item.NOME);
             db.AddInParameter(cmd, "@EMAIL", DbType.String, item.EMAIL);
             db.AddInParameter(cmd, "@SENHA", DbType.String, item.SENHA);
+            db.AddInParameter(cmd, "@TIPO", DbType.Int32, item.TIPO);
             db.ExecuteNonQuery(cmd);
             cmd.Connection.Close();
             cmd.Connection.Dispose();
@@ -187,6 +197,10 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@SENHA", DbType.String, filtro.SENHA);
                 }
+                if (filtro.TIPO != null)
+                {
+                    db.AddInParameter(cmd, "@TIPO", DbType.Int32, filtro.TIPO);
+                }
 			}
             db.ExecuteNonQuery(cmd);
             cmd.Connection.Close();
@@ -203,6 +217,7 @@ namespace CRM_Blue.ADO
             reg.NOME = ((row["USUARIO_NOME"] != DBNull.Value)?row["USUARIO_NOME"].ToString():String.Empty);
             reg.EMAIL = ((row["USUARIO_EMAIL"] != DBNull.Value)?row["USUARIO_EMAIL"].ToString():String.Empty);
             reg.SENHA = ((row["USUARIO_SENHA"] != DBNull.Value)?row["USUARIO_SENHA"].ToString():String.Empty);
+            reg.TIPO = ((row["USUARIO_TIPO"] != DBNull.Value)?(int?)Convert.ToInt32(row["USUARIO_TIPO"].ToString()):null);
             return reg;
         }
 

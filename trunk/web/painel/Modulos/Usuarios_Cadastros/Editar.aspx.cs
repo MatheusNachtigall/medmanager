@@ -86,45 +86,8 @@ public partial class Manager_Modulos_Usuarios_Cadastros_Editar : System.Web.UI.P
 			USUARIO_Service service = new USUARIO_Service();
 			USUARIO filtro = new USUARIO();
 			filtro.USUARIO_ID = Convert.ToInt32(Request.QueryString["id"]);
-			bool error = false;
-			string msgError = "Erro: Ainda existem ";
-			List<string> errList = new List<string>();
-
-			List<PROJETO> projetos = new PROJETO_Service().Listar(new PROJETO() { USUARIO_ID = filtro.USUARIO_ID });
-			if (projetos.Count > 0)
-			{
-				error = true;
-				errList.Add("Projetos");
-			}
-
-			List<FATURAMENTO> clientes = new FATURAMENTO_Service().Listar(new FATURAMENTO() { USUARIO_ID = filtro.USUARIO_ID });
-			if (clientes.Count > 0)
-			{
-				error = true;
-				errList.Add("Faturamentos");
-			}
-
-			if (error)
-			{
-				msgError += String.Join(" ,", errList.ToArray());
-				msgError += " ligados a esse Usuário.";
-
-				int place = msgError.LastIndexOf(",");
-				if (place != -1)
-				{
-					msgError = msgError.Remove(place, 1).Insert(place, "e ");
-				}
-
-				msgFeedbackExcluir.Text = msgError;
-				phFeedbackExcluir.Visible = true;
-				msgFeedbackExcluir.CssClass += " error";
-				return;
-			}
-			else
-			{
-				service.Excluir(filtro);
-				Response.Redirect("Listar.aspx?s=1");
-			}
+			service.Excluir(filtro);
+			Response.Redirect("Listar.aspx?s=1");
 
 		}
 	}

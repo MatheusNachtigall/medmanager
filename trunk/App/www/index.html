@@ -7,11 +7,30 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/main.css">
-    
+    <link rel="stylesheet" href="css/dropzone.css">
+
+    <!-- <script src="js/load.js"></script> -->
+    <script src="js/ws.js"></script>
+    <script src="js/plugins/jquery.min.js"></script>
+    <script src="js/plugins/jquery-ui.min.js"></script>
+    <script src="js/plugins/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/plugins/materialize.min.js"></script>
+    <script src="js/plugins/jquery.mask.min.js"></script>
+    <script src="js/plugins/chart.js"></script>
+    <script src="js/charts_Data.js"></script>
+    <script src="js/requisicoes.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/plugins/dropzone.js"></script>
+    <script>
+        var BACKEND = 'http://localhost:55727/Uploads/';
+        // console.log('BACKEND: ',BACKEND);
+        
+	</script>
+
 </head>
 <body>
 
-    <ul id="slide-out" class="sidenav tabs">
+    <ul id="slide-out" class="sidenav tabs no-autoinit">
         <li><div class="user-view">
           <div class="background">
             <img src="images/sidebar_img.jpg">
@@ -124,16 +143,12 @@
 
                 <div id="modal-download" class="modal blue lighten-5">
                     <div class="modal-content">
-                        <h5 >Baixar Nota Fiscal</h5>
+                        <h5 >Anexos Plantao <span class='modal-data-plantao'></span></h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
-                        <p>Hospital: <span class='modal-hospital'></span></p>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
-                        <p>Valor: <span class='modal-valor'></span></p>
-                        <p>Arquivo: <span class='modal-arquivo'></span></p>
+                        <p class='modal-text'></p>
                     </div>
                     <div class="modal-footer blue lighten-5">
                         <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
-                        <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Baixar</a>
                     </div>
                 </div>
             </div>
@@ -184,6 +199,9 @@
                                     <input id="valor" name="valor" type="text" class="money">
                                     <label for="valor">Valor:</label>
                                 </div>
+                                <div class="input-field col s12">
+                                    <div id="dragAndDropField" class="dropzone"></div>
+                                </div>
                                 <div class="center-align col s12">
                                     <input class="white-text waves-effect waves-light btn-large green darken-1" type="submit" name="frm_plantao_enviar" id="frm_plantao_enviar" value="Enviar">
                                 </div>
@@ -191,7 +209,7 @@
                         </form>
                     </div>
                     <div class="fixed-action-btn">
-                        <a id="btn-limpar" class="btn waves-effect waves-light brown modal-trigger">
+                        <a id="btn-limpar" class="btn waves-effect waves-light brown">
                             Limpar
                             <i class="material-icons right">clear_all</i>
                         </a>
@@ -224,15 +242,7 @@
 
 
 
-    <script src="js/ws.js"></script>
-    <script src="js/plugins/jquery.min.js"></script>
-    <script src="js/plugins/materialize.min.js"></script>
-    <script src="js/plugins/jquery.mask.min.js"></script>
-    <script src="js/plugins/chart.js"></script>
-    <script src="js/charts_Data.js"></script>
-    <script src="js/requisicoes.js"></script>
-    <script src="js/app.js"></script>
-    
+   
     
 </body>
 </html>

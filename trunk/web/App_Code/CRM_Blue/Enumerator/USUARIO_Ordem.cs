@@ -13,6 +13,7 @@ namespace CRM_Blue.Enumerator
         [Description("USUARIO_ID")] USUARIO_ID = 0,
         [Description("NOME")] NOME = 1,
         [Description("EMAIL")] EMAIL = 2,
-        [Description("SENHA")] SENHA = 3
+        [Description("SENHA")] SENHA = 3,
+        [Description("TIPO")] TIPO = 4
     }
 }
