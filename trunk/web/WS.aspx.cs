@@ -58,7 +58,7 @@ public partial class WS : System.Web.UI.Page
                             File.Delete(String.Concat(path, fileName));
                         }
                         Request.Files[0].SaveAs(String.Concat(path, fileName));
-                        //Response.Write(new JavaScriptSerializer().Serialize(new { sucesso = true, fileName = fileName }));
+                        Response.Write(new JavaScriptSerializer().Serialize(new { sucesso = true, fileName = fileName }));
                         return;
                     }
                 }

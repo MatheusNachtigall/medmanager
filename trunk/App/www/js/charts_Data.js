@@ -51,12 +51,12 @@ let buildChartAndGraph = function (lstPlantoes) {
         
         tableHTML += '  <tr>';
         tableHTML += '	    <td>' + HospitaisDistintos[i] + '</td>';
-        tableHTML += '	    <td>' + valor_cidade + '</td>';
+        tableHTML += '	    <td>' + valor_cidade.toFixed(2).toString().replace('.',',') + '</td>';
         tableHTML += '	</tr>';
     }
     tableHTML += '  <tr>';
     tableHTML += '	    <td class="fw700 pt5">Total:</td>';
-    tableHTML += '	    <td class="fw700 pt5">' + mes_soma + '</td>';
+    tableHTML += '	    <td class="fw700 pt5">' + mes_soma.toFixed(2).toString().replace('.',',') + '</td>';
     tableHTML += '	</tr>';
     tableHTML += '</tbody>';
     $('#table-valores').html(tableHTML);

@@ -208,6 +208,10 @@ span.error-info{
   font-weight: 400;
 }
 
+#modal-download h5{
+  font-size: 1.3rem;
+} 
+
 .fixed-action-btn { z-index: 99 !important;}
 
 .fab-options li { position: relative; }

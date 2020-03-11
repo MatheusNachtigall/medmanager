@@ -22,7 +22,7 @@
     <script src="js/app.js"></script>
     <script src="js/plugins/dropzone.js"></script>
     <script>
-        var BACKEND = 'http://localhost:55727/Uploads/';
+        var BACKEND = 'http://localhost:55727/';
         // console.log('BACKEND: ',BACKEND);
         
 	</script>
@@ -143,7 +143,7 @@
 
                 <div id="modal-download" class="modal blue lighten-5">
                     <div class="modal-content">
-                        <h5 >Anexos Plantao <span class='modal-data-plantao'></span></h5>
+                        <h5 >Anexos Plantão <span class='modal-data-plantao'></span></h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
                         <p class='modal-text'></p>
                     </div>
@@ -153,17 +153,16 @@
                 </div>
             </div>
 
-
-
             <div class="section" id="adicionar_plantao">
                     
                     <div class="row">
                         <form action="javascript:;" id="frm_adicionar_plantao" autocomplete="off" class="col s12">
                             <div class="row">
-                                <h5 class="black-text">Adicionar Plantão</h5>
+                                <h5 class="black-text adicionar_plantao_h5">Adicionar Plantão</h5>
                                 <br>
                             </div>
                                 <div class="row">
+                                    <input id="id" type="text" class="hidden">
                                     <div class="input-field col s12">
                                         <select id="select-hospital" name="select-hospital"></select>
                                         <label>Hospital:</label>
@@ -215,7 +214,6 @@
                         </a>
                     </div>
 
-
                     <div id="modal-inserir-plantao" class="modal">
                         <div class="modal-content">
                             <h5 >Confirme seus dados:</h5>
@@ -234,15 +232,5 @@
                 </div>
         </div>
     </div>
-       
-
-
-
-    
-
-
-
-   
-    
 </body>
 </html>

@@ -63,7 +63,7 @@ namespace CRM_Blue
 					try
 					{
 						if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
-						if (input.action.Equals("GET_ANEXOS")) ret = GET_ANEXOS(input);
+						//if (input.action.Equals("GET_ANEXOS")) ret = GET_ANEXOS(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
 						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
@@ -96,42 +96,49 @@ namespace CRM_Blue
 		}
 
 
-        public class GET_ANEXOS_DATA
-        {
-            public int PLANTAO_ID { get; set; }
-        }
-        public static string GET_ANEXOS(WS_Input ws_input)
-		{
-            GET_ANEXOS_DATA input = new JavaScriptSerializer().Deserialize<GET_ANEXOS_DATA>(ws_input.data);
+  //      public class GET_ANEXOS_DATA
+  //      {
+  //          public int PLANTAO_ID { get; set; }
+  //      }
+  //      public static string GET_ANEXOS(WS_Input ws_input)
+		//{
+  //          GET_ANEXOS_DATA input = new JavaScriptSerializer().Deserialize<GET_ANEXOS_DATA>(ws_input.data);
 
-            List<ANEXO> lstAnexo = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID }, ANEXO_Ordem.ORDEM, OrdemTipo.Ascendente);
-            List<object> lstRetorno = new List<object>();
-            for (int i = 0; i < lstAnexo.Count; i++)
-            {
-                lstRetorno.Add(lstAnexo[i].ARQUIVO);
-            }
+  //          List<ANEXO> lstAnexo = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID }, ANEXO_Ordem.ORDEM, OrdemTipo.Ascendente);
+  //          List<object> lstRetorno = new List<object>();
+  //          for (int i = 0; i < lstAnexo.Count; i++)
+  //          {
+  //              lstRetorno.Add(lstAnexo[i].ARQUIVO);
+  //          }
 
-            String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstAnexo = lstRetorno });
-			return ret;
-		}
+  //          String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstAnexo = lstRetorno });
+		//	return ret;
+		//}
 		public static string LOAD_PLANTOES(WS_Input ws_input)
 		{
 			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
-			List<PLANTAO> lstPlantao = new PLANTAO_Service().Listar();
-
+			List <PLANTAO> lstPlantao = new PLANTAO_Service().Listar();
+            List<ANEXO> lstAnexo = null;
+            ANEXO_Service aService = new ANEXO_Service();
 			List<object> lstRetorno = new List<object>();
 			for (int i = 0; i < lstPlantao.Count; i++)
 			{
-				lstRetorno.Add(new
-				{
+                lstAnexo = aService.Listar(new ANEXO() { PLANTAO_ID = lstPlantao[i].PLANTAO_ID }, ANEXO_Ordem.ORDEM, OrdemTipo.Ascendente);
+                lstRetorno.Add(new
+                {
                     PLANTAO_ID = lstPlantao[i].PLANTAO_ID,
                     HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
-					HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
-					VALOR = lstPlantao[i].VALOR,
-					DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
-					COR = lstPlantao[i].HOSPITAL.COR,
-                    RECEBIDO = lstPlantao[i].RECEBIDO
-				});
+                    HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
+                    //VALOR = lstPlantao[i].VALOR,
+                    VALOR = (Math.Round((double)lstPlantao[i].VALOR, 2)),
+                    DATA_PLANTAO = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
+                    DATA_PAGAMENTO = ((DateTime)lstPlantao[i].DATA_PAGAMENTO).ToString("MM-dd-yyyy"),
+                    CNPJ = lstPlantao[i].CNPJ,
+                    INSS = lstPlantao[i].INSS,
+                    COR = lstPlantao[i].HOSPITAL.COR,
+                    RECEBIDO = lstPlantao[i].RECEBIDO,
+                    ANEXO = lstAnexo
+                });
 			}
 
 			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
@@ -196,12 +203,24 @@ namespace CRM_Blue
             public bool INSS { get; set; }
             public bool CNPJ { get; set; }
             public string[] MEDIA { get; set; }
+            public int PLANTAO_ID { get; set; }
         }
         public static string INSERIR_PLANTAO(WS_Input ws_input)
         {
-            INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
-            PLANTAO plantao = new PLANTAO();
             String ret = "";
+            INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
+
+            PLANTAO plantao = null;
+            PLANTAO_Service pService = new PLANTAO_Service();
+
+            if (input.PLANTAO_ID == 0)
+            {
+                plantao = new PLANTAO();
+            }
+            else
+            {
+                plantao = pService.Carregar(input.PLANTAO_ID);
+            }
             try
             {
                 plantao.HOSPITAL_ID = input.HOSPITAL_ID;
@@ -211,9 +230,17 @@ namespace CRM_Blue
                 plantao.DATA_CADASTRO = DateTime.Now;
                 plantao.INSS = input.INSS;
                 plantao.CNPJ = input.CNPJ;
+                plantao.RECEBIDO = false;
 
-                PLANTAO_Service pService = new PLANTAO_Service();
-                plantao = pService.Inserir(plantao);
+                if (input.PLANTAO_ID == 0)
+                {
+                    plantao = pService.Inserir(plantao);
+                }
+                else
+                {
+                    plantao = pService.Atualizar(plantao);
+                }
+                
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
             }
             catch (Exception)
@@ -221,6 +248,17 @@ namespace CRM_Blue
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
             }
 
+            if (input.PLANTAO_ID != 0)
+            {
+                List <ANEXO> oldAnexos = null;
+                oldAnexos = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+
+                //Se existem anexos anteriores vinculados a esse plantao...excluir
+                if (oldAnexos != null)
+                {
+                    new ANEXO_Service().Excluir(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+                }
+            }
 
             if (input.MEDIA != null)
             {
@@ -293,13 +331,13 @@ namespace CRM_Blue
 
         public class MARCAR_PLANTAO_RECEBIDO_DATA
         {
-            public int HOSPITAL_ID { get; set; }
+            public int PLANTAO_ID { get; set; }
         }
         public static string MARCAR_PLANTAO_RECEBIDO(WS_Input ws_input)
         {
             MARCAR_PLANTAO_RECEBIDO_DATA input = new JavaScriptSerializer().Deserialize<MARCAR_PLANTAO_RECEBIDO_DATA>(ws_input.data);
             PLANTAO_Service pService = new PLANTAO_Service();
-            PLANTAO plantao = pService.Carregar(input.HOSPITAL_ID);
+            PLANTAO plantao = pService.Carregar(input.PLANTAO_ID);
             String ret = "";
             try
             {
@@ -316,18 +354,17 @@ namespace CRM_Blue
 
         public class EXCLUIR_PLANTAO_DATA
         {
-            public int HOSPITAL_ID { get; set; }
+            public int PLANTAO_ID { get; set; }
         }
         public static string EXCLUIR_PLANTAO(WS_Input ws_input)
         {
-            MARCAR_PLANTAO_RECEBIDO_DATA input = new JavaScriptSerializer().Deserialize<MARCAR_PLANTAO_RECEBIDO_DATA>(ws_input.data);
-            PLANTAO_Service pService = new PLANTAO_Service();
-            PLANTAO plantao = pService.Carregar(input.HOSPITAL_ID);
+            EXCLUIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<EXCLUIR_PLANTAO_DATA>(ws_input.data);
             String ret = "";
             try
             {
-                plantao.RECEBIDO = true;
-                pService.Excluir(plantao);
+                new ANEXO_Service().Excluir(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+                new PLANTAO_Service().Excluir(new PLANTAO() { PLANTAO_ID = input.PLANTAO_ID });
+
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
             }
             catch (Exception)
