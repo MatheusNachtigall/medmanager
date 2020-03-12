@@ -40,7 +40,7 @@ namespace CRM_Blue
 
 	public class Services
 	{
-		public static string[] free_actions = new string[] { "CONSULTAR_CPF", "CADASTRO", "LOGIN", "ESQUECI_A_SENHA", "BUSCAR_PRESTADOR", "BUSCAR_PESSOA", "GRAVA_PRESTADOR_FAKE" };
+		public static string[] free_actions = new string[] {"CADASTRO", "LOGIN", "ESQUECI_A_SENHA" };
 		public static async Task PROCESSA_ACTION(WebSocket webSocket, CancellationToken? cancellationToken, WS_Input input)
 		{
 			String jsonRet = String.Empty;
@@ -63,13 +63,11 @@ namespace CRM_Blue
 					try
 					{
 						if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
-						//if (input.action.Equals("GET_ANEXOS")) ret = GET_ANEXOS(input);
 						if (input.action.Equals("LOAD_PLANTOES")) ret = LOAD_PLANTOES(input);
 						//if (input.action.Equals("LOAD_HOSPITAIS")) ret = LOAD_HOSPITAIS(input);
 						if (input.action.Equals("GRAFICO_MES")) ret = GRAFICO_MES(input);
 						if (input.action.Equals("MARCAR_PLANTAO_RECEBIDO")) ret = MARCAR_PLANTAO_RECEBIDO(input);
 						if (input.action.Equals("EXCLUIR_PLANTAO")) ret = EXCLUIR_PLANTAO(input);
-						//if (input.action.Equals("INSERIR_PLANTAO")) ret = INSERIR_PLANTAO(input);
 					}
 					catch (Exception ex)
 					{
@@ -95,25 +93,6 @@ namespace CRM_Blue
 			}
 		}
 
-
-  //      public class GET_ANEXOS_DATA
-  //      {
-  //          public int PLANTAO_ID { get; set; }
-  //      }
-  //      public static string GET_ANEXOS(WS_Input ws_input)
-		//{
-  //          GET_ANEXOS_DATA input = new JavaScriptSerializer().Deserialize<GET_ANEXOS_DATA>(ws_input.data);
-
-  //          List<ANEXO> lstAnexo = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID }, ANEXO_Ordem.ORDEM, OrdemTipo.Ascendente);
-  //          List<object> lstRetorno = new List<object>();
-  //          for (int i = 0; i < lstAnexo.Count; i++)
-  //          {
-  //              lstRetorno.Add(lstAnexo[i].ARQUIVO);
-  //          }
-
-  //          String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstAnexo = lstRetorno });
-		//	return ret;
-		//}
 		public static string LOAD_PLANTOES(WS_Input ws_input)
 		{
 			//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
@@ -129,7 +108,6 @@ namespace CRM_Blue
                     PLANTAO_ID = lstPlantao[i].PLANTAO_ID,
                     HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
                     HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
-                    //VALOR = lstPlantao[i].VALOR,
                     VALOR = (Math.Round((double)lstPlantao[i].VALOR, 2)),
                     DATA_PLANTAO = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
                     DATA_PAGAMENTO = ((DateTime)lstPlantao[i].DATA_PAGAMENTO).ToString("MM-dd-yyyy"),
@@ -144,29 +122,6 @@ namespace CRM_Blue
 			String ret = new JavaScriptSerializer().Serialize(new { sucesso = true , lstPlantao = lstRetorno });
 			return ret;
 		}
-
-
-		//public static string LOAD_HOSPITAIS(WS_Input ws_input)
-		//{
-		//	//LOGIN_DATA input = new JavaScriptSerializer().Deserialize<LOGIN_DATA>(ws_input.data);
-		//	List<PLANTAO> lstPlantao = new PLANTAO_Service().Listar();
-
-		//	List<object> lstRetorno = new List<object>();
-		//	for (int i = 0; i < lstPlantao.Count; i++)
-		//	{
-		//		lstRetorno.Add(new
-		//		{
-		//			HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
-		//			VALOR = lstPlantao[i].VALOR,
-		//			DATA = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
-		//			COR = lstPlantao[i].HOSPITAL.COR
-		//		});
-		//	}
-
-		//	String ret = new JavaScriptSerializer().Serialize(new { sucesso = true, lstPlantao = lstRetorno });
-		//	return ret;
-		//}
-
 
 		public static string GRAFICO_MES(WS_Input ws_input)
 		{
