@@ -5,6 +5,8 @@ var LP = null;
 
 $(function() {
     startMaterialize();
+    loadCalendar();
+
     
     $('.money').mask('#.##0,00', { reverse: true });
     
@@ -78,6 +80,8 @@ $(function() {
             }
         };
     });
+
+
 });
 
 
@@ -97,9 +101,9 @@ let arrangePlantoes = function (lstPlantoes) {
     PLANTOES = lstPlantoes.reduce(function (r, o) {
         var m = o.DATA_PLANTAO.split(('-'))[2];
         if (r[m]){
-            r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR})
+            r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR, RECEBIDO: o.RECEBIDO})
         } else {
-            r[m] = [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR}];
+            r[m] = [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR, RECEBIDO: o.RECEBIDO}];
         }
         return r;
     }, {});
@@ -109,9 +113,9 @@ let arrangePlantoes = function (lstPlantoes) {
         var mes = element.reduce(function (r, o) {
             var m = new Date(o.DATA_PLANTAO).toLocaleString('default', { month: 'long'}).toString();
             if (r[m]){
-                r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR});
+                r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR, RECEBIDO: o.RECEBIDO});
             } else {
-                r[m] =  [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR}]
+                r[m] =  [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR, RECEBIDO: o.RECEBIDO}]
             }
             return r;
         }, {});
@@ -382,4 +386,42 @@ var startDropzone = function(){
                     '.PDF']
         return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName.toUpperCase());
     }
+}
+
+
+let loadCalendar = function () {
+    var calendarEl = document.getElementById('calendar');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    plugins: [ 'interaction', 'dayGrid', 'moment'],
+    locale: 'pt-br',
+
+    views: {
+        month: {
+          titleFormat: 'MMMM YYYY'
+        }
+      },
+
+    header: {
+      left: 'prev,next',
+      center: 'title',
+      right: 'today'
+    },
+    events: [
+      {
+        title: 'UPA',
+        start: '2020-03-02'
+      },
+      {
+        title: 'Pinheiro Machado',
+        start: '2020-03-05'
+      },
+      {
+        title: 'UPA',
+        start: '2020-03-09'
+      }
+    ]
+  });
+
+  calendar.render();
 }

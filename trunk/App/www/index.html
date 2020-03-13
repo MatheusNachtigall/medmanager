@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dropzone.css">
+    <link rel="stylesheet" href="css/fullCalendar.min.css">
+
+    
 
     <!-- <script src="js/load.js"></script> -->
     <script src="js/ws.js"></script>
@@ -17,6 +20,9 @@
     <script src="js/plugins/materialize.min.js"></script>
     <script src="js/plugins/jquery.mask.min.js"></script>
     <script src="js/plugins/chart.js"></script>
+    <script src="js/plugins/fullCalendar.min.js"></script>
+    <script src="js/plugins/moment-with-locales.min.js"></script>
+    <script src="js/plugins/fullcalendar_moment.js"></script>
     <script src="js/charts_Data.js"></script>
     <script src="js/requisicoes.js"></script>
     <script src="js/app.js"></script>
@@ -42,6 +48,7 @@
         <li class="tab side"><a class="waves-effect active" href="#principal">Tela Inicial</a></li>
         <li class="tab side"><a class="waves-effect" href="#adicionar_plantao"><i class="material-icons">add_circle</i>Adicionar Plantão</a></li>
         <li class="tab side"><a class="waves-effect" href="#plantoes_detalhes"><i class="material-icons">show_chart</i>Plantões</a></li>
+        <li class="tab side"><a class="waves-effect" href="#calendar"><i class="material-icons">today</i>Agenda</a></li>
         <li><div class="divider"></div></li>
       <li class="tab no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -155,81 +162,88 @@
 
             <div class="section" id="adicionar_plantao">
                     
-                    <div class="row">
-                        <form action="javascript:;" id="frm_adicionar_plantao" autocomplete="off" class="col s12">
+                <div class="row">
+                    <form action="javascript:;" id="frm_adicionar_plantao" autocomplete="off" class="col s12">
+                        <div class="row">
+                            <h5 class="black-text adicionar_plantao_h5">Adicionar Plantão</h5>
+                            <br>
+                        </div>
                             <div class="row">
-                                <h5 class="black-text adicionar_plantao_h5">Adicionar Plantão</h5>
-                                <br>
-                            </div>
-                                <div class="row">
-                                    <input id="id" type="text" class="hidden">
-                                    <div class="input-field col s12">
-                                        <select id="select-hospital" name="select-hospital"></select>
-                                        <label>Hospital:</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s6">
-                                        <input type="date" name="data_plantao" id="data_plantao">
-                                        <label for="data_plantao">Data Plantão:</label>
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <input type="date" name="data_pagamento" id="data_pagamento">
-                                        <label for="data_pagamento">Data Pagamento:</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s6">
-                                        <label>
-                                            <input id='CNPJ' type="checkbox" />
-                                            <span>CNPJ</span>
-                                        </label>
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <label>
-                                            <input id='INSS' type="checkbox" />
-                                            <span>INSS</span>
-                                        </label>
-                                    </div>
-                                <br>
-                                <br>
-                                <br>
+                                <input id="id" type="text" class="hidden">
                                 <div class="input-field col s12">
-                                    <input id="valor" name="valor" type="text" class="money">
-                                    <label for="valor">Valor:</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <div id="dragAndDropField" class="dropzone"></div>
-                                </div>
-                                <div class="center-align col s12">
-                                    <input class="white-text waves-effect waves-light btn-large green darken-1" type="submit" name="frm_plantao_enviar" id="frm_plantao_enviar" value="Enviar">
+                                    <select id="select-hospital" name="select-hospital"></select>
+                                    <label>Hospital:</label>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="fixed-action-btn">
-                        <a id="btn-limpar" class="btn waves-effect waves-light brown">
-                            Limpar
-                            <i class="material-icons right">clear_all</i>
-                        </a>
-                    </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="date" name="data_plantao" id="data_plantao">
+                                    <label for="data_plantao">Data Plantão:</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input type="date" name="data_pagamento" id="data_pagamento">
+                                    <label for="data_pagamento">Data Pagamento:</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <label>
+                                        <input id='CNPJ' type="checkbox" />
+                                        <span>CNPJ</span>
+                                    </label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <label>
+                                        <input id='INSS' type="checkbox" />
+                                        <span>INSS</span>
+                                    </label>
+                                </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="input-field col s12">
+                                <input id="valor" name="valor" type="text" class="money">
+                                <label for="valor">Valor:</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <div id="dragAndDropField" class="dropzone"></div>
+                            </div>
+                            <div class="center-align col s12">
+                                <input class="white-text waves-effect waves-light btn-large green darken-1" type="submit" name="frm_plantao_enviar" id="frm_plantao_enviar" value="Enviar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="fixed-action-btn">
+                    <a id="btn-limpar" class="btn waves-effect waves-light brown">
+                        Limpar
+                        <i class="material-icons right">clear_all</i>
+                    </a>
+                </div>
 
-                    <div id="modal-inserir-plantao" class="modal">
-                        <div class="modal-content">
-                            <h5 >Confirme seus dados:</h5>
-                            <p>Hospital: <span class='modal-hospital'></span></p>
-                            <p>Data Plantão: <span class='modal-data-plantao'></span></p>
-                            <p>Data Pagamento: <span class='modal-data-pagamento'></span></p>
-                            <p>INSS: <span class='modal-INSS'></span></p>
-                            <p>CNPJ: <span class='modal-CNPJ'></span></p>
-                            <p>Valor: <span class='modal-valor'></span></p>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
-                            <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
-                        </div>
+                <div id="modal-inserir-plantao" class="modal">
+                    <div class="modal-content">
+                        <h5 >Confirme seus dados:</h5>
+                        <p>Hospital: <span class='modal-hospital'></span></p>
+                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                        <p>Data Pagamento: <span class='modal-data-pagamento'></span></p>
+                        <p>INSS: <span class='modal-INSS'></span></p>
+                        <p>CNPJ: <span class='modal-CNPJ'></span></p>
+                        <p>Valor: <span class='modal-valor'></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
+                        <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
                     </div>
                 </div>
+            </div>
+
+            <div class="section" id="calendar">
+                    
+                <div class="row">
+                    <div id='calendar'></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

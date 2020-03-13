@@ -266,3 +266,18 @@ form .trash-can{
 
 #trash-can,
 #trash-can a { margin-top: 0 }
+
+
+.fc-button {
+  background-color: #43a047 !important;
+}
+
+.fc-unthemed tbody{
+  border-color: #a5a5a5 !important;
+}
+
+.fc-dayGrid-view .fc-body .fc-row {
+  min-height: 5em !important;
+}
+
+.fc-toolbar { text-transform: capitalize; }

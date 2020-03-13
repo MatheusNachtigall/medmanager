@@ -28,7 +28,7 @@ let generateMonthlyPieChart = function (HospitaisDistintos, dataSomas, CoresDist
 
 
 let buildChartAndGraph = function (lstPlantoes) {
-	// console.log(lstPlantoes);
+	console.log(lstPlantoes);
 	
     var HospitaisDistintos = lstPlantoes.map(e => e.HOSPITAL).filter( (v,i,s) => s.indexOf(v) === i);
     var CoresDistintas = lstPlantoes.map(e => e.COR).filter( (v,i,s) => s.indexOf(v) === i);
@@ -43,12 +43,12 @@ let buildChartAndGraph = function (lstPlantoes) {
     tableHTML += '</thead>';
     tableHTML += '<tbody>';
     var mes_soma = 0;
+    var falta_receber = 0;
     var valor_cidade;
     for  (var i = 0; i < HospitaisDistintos.length; i++) {
         valor_cidade = lstPlantoes.filter( (e => e.HOSPITAL == HospitaisDistintos[i])).map(e => e.VALOR).reduce(( acc, summ ) => acc + summ, 0);
         dataSomas.push(valor_cidade);
         mes_soma += valor_cidade;
-        
         tableHTML += '  <tr>';
         tableHTML += '	    <td>' + HospitaisDistintos[i] + '</td>';
         tableHTML += '	    <td>' + valor_cidade.toFixed(2).toString().replace('.',',') + '</td>';
@@ -57,6 +57,12 @@ let buildChartAndGraph = function (lstPlantoes) {
     tableHTML += '  <tr>';
     tableHTML += '	    <td class="fw700 pt5">Total:</td>';
     tableHTML += '	    <td class="fw700 pt5">' + mes_soma.toFixed(2).toString().replace('.',',') + '</td>';
+    tableHTML += '	</tr>';
+    var falta_receber = 0;
+    falta_receber = lstPlantoes.filter(e => !(e.RECEBIDO)).reduce(( acc, summ ) => acc + summ.VALOR, 0);
+    tableHTML += '  <tr>';
+    tableHTML += '	    <td class="fw700 pt5">Falta Receber:</td>';
+    tableHTML += '	    <td class="fw700 pt5">' + falta_receber.toFixed(2).toString().replace('.',',') + '</td>';
     tableHTML += '	</tr>';
     tableHTML += '</tbody>';
     $('#table-valores').html(tableHTML);
