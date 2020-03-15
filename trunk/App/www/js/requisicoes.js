@@ -11,6 +11,9 @@ let REQ_LOAD_PLANTOES = function () {
             $('#select-mes').val(month);
             $( 'select' ).formSelect();
             buildDetailedPlantaoList();
+            
+            clearCalendarEvents();
+            loadCalendarEvents();
         }
     });
 }

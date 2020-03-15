@@ -28,8 +28,6 @@ let generateMonthlyPieChart = function (HospitaisDistintos, dataSomas, CoresDist
 
 
 let buildChartAndGraph = function (lstPlantoes) {
-	console.log(lstPlantoes);
-	
     var HospitaisDistintos = lstPlantoes.map(e => e.HOSPITAL).filter( (v,i,s) => s.indexOf(v) === i);
     var CoresDistintas = lstPlantoes.map(e => e.COR).filter( (v,i,s) => s.indexOf(v) === i);
     

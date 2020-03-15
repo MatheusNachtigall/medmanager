@@ -238,19 +238,19 @@ span.error-info{
 
 
 .topo-fixo {
-  max-width: 375px !important;
+  max-width: 400px !important;
 }
 
 body{
   height: 100%;
   position: relative;
-  max-width: 375px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
 @media only screen and (min-width: 993px){
   .container {
-      width: 85% !important;
+      width: 92% !important;
   }
 }
 /* 
@@ -281,3 +281,7 @@ form .trash-can{
 }
 
 .fc-toolbar { text-transform: capitalize; }
+
+.fc-day-grid-container{
+  height: auto !important;
+}

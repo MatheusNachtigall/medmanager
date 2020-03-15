@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Med Manager</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -23,14 +24,23 @@
     <script src="js/plugins/fullCalendar.min.js"></script>
     <script src="js/plugins/moment-with-locales.min.js"></script>
     <script src="js/plugins/fullcalendar_moment.js"></script>
+    <script src="js/calendar.js"></script>
     <script src="js/charts_Data.js"></script>
     <script src="js/requisicoes.js"></script>
     <script src="js/app.js"></script>
     <script src="js/plugins/dropzone.js"></script>
     <script>
-        var BACKEND = 'http://localhost:55727/';
-        // console.log('BACKEND: ',BACKEND);
         
+        // console.log('BACKEND: ',BACKEND);
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+            .then(function () {
+                console.log('service worker registered');
+            })
+            .catch(function () {
+                console.warn('service worker failed');
+            });
+        }
 	</script>
 
 </head>
@@ -48,9 +58,9 @@
         <li class="tab side"><a class="waves-effect active" href="#principal">Tela Inicial</a></li>
         <li class="tab side"><a class="waves-effect" href="#adicionar_plantao"><i class="material-icons">add_circle</i>Adicionar Plantão</a></li>
         <li class="tab side"><a class="waves-effect" href="#plantoes_detalhes"><i class="material-icons">show_chart</i>Plantões</a></li>
-        <li class="tab side"><a class="waves-effect" href="#calendar"><i class="material-icons">today</i>Agenda</a></li>
+        <li class="tab side"><a class="waves-effect tab-calendar" href="#calendar"><i class="material-icons">today</i>Agenda</a></li>
         <li><div class="divider"></div></li>
-      <li class="tab no-padding">
+      <!-- <li class="tab no-padding">
         <ul class="collapsible collapsible-accordion">
           <li>
             <a class="collapsible-header waves-effect">Adicionar<i class="material-icons">arrow_drop_down</i></a>
@@ -63,7 +73,7 @@
             </div>
           </li>
         </ul>
-      </li>
+      </li> -->
     </ul>
       
     <div class="topo-fixo z-depth-1">
@@ -242,6 +252,17 @@
                     
                 <div class="row">
                     <div id='calendar'></div>
+                </div>
+
+                <div id="modal-criar-novo-plantao" class="modal">
+                    <div class="modal-content">
+                        <h5 >Criar novo plantao?</h5>
+                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
+                        <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
+                    </div>
                 </div>
             </div>
         </div>

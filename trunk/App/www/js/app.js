@@ -2,6 +2,7 @@ var TESTE;
 var PLANTOES = null;
 var PLANTOES_2 = null;
 var LP = null;
+let calendar = null;
 
 $(function() {
     startMaterialize();
@@ -81,10 +82,10 @@ $(function() {
         };
     });
 
-
+    $('ul.tabs').on('click', 'a.tab-calendar', function(e) {
+        calendar.render();
+    });
 });
-
-
 
 let startMaterialize = function () {
     M.AutoInit();
@@ -93,9 +94,6 @@ let startMaterialize = function () {
     });
     $('.tabs').tabs();
 };
-
-
-
 
 let arrangePlantoes = function (lstPlantoes) {
     PLANTOES = lstPlantoes.reduce(function (r, o) {
@@ -386,42 +384,4 @@ var startDropzone = function(){
                     '.PDF']
         return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName.toUpperCase());
     }
-}
-
-
-let loadCalendar = function () {
-    var calendarEl = document.getElementById('calendar');
-
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    plugins: [ 'interaction', 'dayGrid', 'moment'],
-    locale: 'pt-br',
-
-    views: {
-        month: {
-          titleFormat: 'MMMM YYYY'
-        }
-      },
-
-    header: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'today'
-    },
-    events: [
-      {
-        title: 'UPA',
-        start: '2020-03-02'
-      },
-      {
-        title: 'Pinheiro Machado',
-        start: '2020-03-05'
-      },
-      {
-        title: 'UPA',
-        start: '2020-03-09'
-      }
-    ]
-  });
-
-  calendar.render();
 }

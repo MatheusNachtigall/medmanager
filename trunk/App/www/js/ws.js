@@ -12,6 +12,8 @@ var WS_DELAY = (getParameterByName('delay') == null) ? 500 : getParameterByName(
 var PERSONIFICANDO = false;
 var _BLOCK_AJAX = false;
 
+var BACKEND = 'http://localhost:55727/';
+
 if (location.href.indexOf('localhost') != -1) {
 	WS_SOCKET_URL = 'ws://localhost:55727/WSH.ashx';
 	WS_HTTP_URL = 'http://localhost:55727/WS.aspx';
