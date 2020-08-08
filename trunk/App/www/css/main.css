@@ -285,3 +285,36 @@ form .trash-can{
 .fc-day-grid-container{
   height: auto !important;
 }
+
+.field-multiple .field {
+  background-color: white;
+  height: 150px;
+  border-radius: 5px;
+  padding: 6px 0;
+  margin-bottom: 10px;
+}
+
+.field-multiple .field-remove {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  left: 310px;
+  top: -160px;
+  background: url(../images/field-remove.png) no-repeat;
+  overflow: hidden;
+  text-indent: -9999px;
+  display: none;
+}
+
+.field-multiple .field:nth-last-child(2) .field-remove {
+  display: block;
+}
+
+.field-multiple .field:first-child .field-remove{
+  display: none;
+}
+
+
+#calendar-editar-plantao .modal-footer {
+  padding: 0 20px;
+}

@@ -49,9 +49,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@INSS", DbType.Boolean, filtro.INSS);
                 }
-                if (filtro.DATA_PLANTAO != null)
+                if (filtro.DATA != null)
                 {
-                    db.AddInParameter(cmd, "@DATA_PLANTAO", DbType.DateTime, filtro.DATA_PLANTAO);
+                    db.AddInParameter(cmd, "@DATA", DbType.DateTime, filtro.DATA);
+                }
+                if (!String.IsNullOrEmpty(filtro.HORARIO))
+                {
+                    db.AddInParameter(cmd, "@HORARIO", DbType.String, filtro.HORARIO);
+                }
+                if (filtro.PERIODO != null)
+                {
+                    db.AddInParameter(cmd, "@PERIODO", DbType.Int32, filtro.PERIODO);
                 }
                 if (filtro.DATA_PAGAMENTO != null)
                 {
@@ -132,9 +140,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@INSS", DbType.Boolean, filtro.INSS);
                 }
-                if (filtro.DATA_PLANTAO != null)
+                if (filtro.DATA != null)
                 {
-                    db.AddInParameter(cmd, "@DATA_PLANTAO", DbType.DateTime, filtro.DATA_PLANTAO);
+                    db.AddInParameter(cmd, "@DATA", DbType.DateTime, filtro.DATA);
+                }
+                if (!String.IsNullOrEmpty(filtro.HORARIO))
+                {
+                    db.AddInParameter(cmd, "@HORARIO", DbType.String, filtro.HORARIO);
+                }
+                if (filtro.PERIODO != null)
+                {
+                    db.AddInParameter(cmd, "@PERIODO", DbType.Int32, filtro.PERIODO);
                 }
                 if (filtro.DATA_PAGAMENTO != null)
                 {
@@ -181,7 +197,9 @@ namespace CRM_Blue.ADO
             db.AddInParameter(cmd, "@VALOR", DbType.Decimal, item.VALOR);
             db.AddInParameter(cmd, "@CNPJ", DbType.Boolean, item.CNPJ);
             db.AddInParameter(cmd, "@INSS", DbType.Boolean, item.INSS);
-            db.AddInParameter(cmd, "@DATA_PLANTAO", DbType.DateTime, item.DATA_PLANTAO);
+            db.AddInParameter(cmd, "@DATA", DbType.DateTime, item.DATA);
+            db.AddInParameter(cmd, "@HORARIO", DbType.String, item.HORARIO);
+            db.AddInParameter(cmd, "@PERIODO", DbType.Int32, item.PERIODO);
             db.AddInParameter(cmd, "@DATA_PAGAMENTO", DbType.DateTime, item.DATA_PAGAMENTO);
             db.AddInParameter(cmd, "@DATA_CADASTRO", DbType.DateTime, item.DATA_CADASTRO);
             db.AddInParameter(cmd, "@RECEBIDO", DbType.Boolean, item.RECEBIDO);
@@ -203,7 +221,9 @@ namespace CRM_Blue.ADO
             db.AddInParameter(cmd, "@VALOR", DbType.Decimal, item.VALOR);
             db.AddInParameter(cmd, "@CNPJ", DbType.Boolean, item.CNPJ);
             db.AddInParameter(cmd, "@INSS", DbType.Boolean, item.INSS);
-            db.AddInParameter(cmd, "@DATA_PLANTAO", DbType.DateTime, item.DATA_PLANTAO);
+            db.AddInParameter(cmd, "@DATA", DbType.DateTime, item.DATA);
+            db.AddInParameter(cmd, "@HORARIO", DbType.String, item.HORARIO);
+            db.AddInParameter(cmd, "@PERIODO", DbType.Int32, item.PERIODO);
             db.AddInParameter(cmd, "@DATA_PAGAMENTO", DbType.DateTime, item.DATA_PAGAMENTO);
             db.AddInParameter(cmd, "@DATA_CADASTRO", DbType.DateTime, item.DATA_CADASTRO);
             db.AddInParameter(cmd, "@RECEBIDO", DbType.Boolean, item.RECEBIDO);
@@ -241,9 +261,17 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@INSS", DbType.Boolean, filtro.INSS);
                 }
-                if (filtro.DATA_PLANTAO != null)
+                if (filtro.DATA != null)
                 {
-                    db.AddInParameter(cmd, "@DATA_PLANTAO", DbType.DateTime, filtro.DATA_PLANTAO);
+                    db.AddInParameter(cmd, "@DATA", DbType.DateTime, filtro.DATA);
+                }
+                if (!String.IsNullOrEmpty(filtro.HORARIO))
+                {
+                    db.AddInParameter(cmd, "@HORARIO", DbType.String, filtro.HORARIO);
+                }
+                if (filtro.PERIODO != null)
+                {
+                    db.AddInParameter(cmd, "@PERIODO", DbType.Int32, filtro.PERIODO);
                 }
                 if (filtro.DATA_PAGAMENTO != null)
                 {
@@ -274,7 +302,9 @@ namespace CRM_Blue.ADO
             reg.VALOR = ((row["PLANTAO_VALOR"] != DBNull.Value)?Convert.ToDecimal(row["PLANTAO_VALOR"].ToString()):0);
             reg.CNPJ = ((row["PLANTAO_CNPJ"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_CNPJ"].ToString()):null);
             reg.INSS = ((row["PLANTAO_INSS"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_INSS"].ToString()):null);
-            reg.DATA_PLANTAO = ((row["PLANTAO_DATA_PLANTAO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_PLANTAO"].ToString()):null);
+            reg.DATA = ((row["PLANTAO_DATA"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA"].ToString()):null);
+            reg.HORARIO = ((row["PLANTAO_HORARIO"] != DBNull.Value)?row["PLANTAO_HORARIO"].ToString():String.Empty);
+            reg.PERIODO = ((row["PLANTAO_PERIODO"] != DBNull.Value)?(int?)Convert.ToInt32(row["PLANTAO_PERIODO"].ToString()):null);
             reg.DATA_PAGAMENTO = ((row["PLANTAO_DATA_PAGAMENTO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_PAGAMENTO"].ToString()):null);
             reg.DATA_CADASTRO = ((row["PLANTAO_DATA_CADASTRO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_CADASTRO"].ToString()):null);
             reg.RECEBIDO = ((row["PLANTAO_RECEBIDO"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_RECEBIDO"].ToString()):null);

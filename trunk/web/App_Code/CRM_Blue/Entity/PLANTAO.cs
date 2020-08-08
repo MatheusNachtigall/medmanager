@@ -16,7 +16,9 @@ namespace CRM_Blue.Entity
         private Decimal? _vALOR;
         private Boolean? _cNPJ;
         private Boolean? _iNSS;
-        private DateTime? _dATA_PLANTAO;
+        private DateTime? _dATA;
+        private String _hORARIO;
+        private Int32? _pERIODO;
         private DateTime? _dATA_PAGAMENTO;
         private DateTime? _dATA_CADASTRO;
         private Boolean? _rECEBIDO;
@@ -57,10 +59,22 @@ namespace CRM_Blue.Entity
             set { _iNSS = value; }
         }
 
-        public DateTime? DATA_PLANTAO
+        public DateTime? DATA
         {
-            get { return _dATA_PLANTAO; }
-            set { _dATA_PLANTAO = value; }
+            get { return _dATA; }
+            set { _dATA = value; }
+        }
+
+        public String HORARIO
+        {
+            get { return _hORARIO; }
+            set { _hORARIO = value; }
+        }
+
+        public Int32? PERIODO
+        {
+            get { return _pERIODO; }
+            set { _pERIODO = value; }
         }
 
         public DateTime? DATA_PAGAMENTO

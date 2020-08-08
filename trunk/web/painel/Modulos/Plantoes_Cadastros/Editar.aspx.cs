@@ -109,7 +109,7 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Editar : System.Web.UI.P
     {
 		item.HOSPITAL_ID = !String.IsNullOrEmpty(ddlHospital.SelectedValue) ? (Int32?)Convert.ToInt32(ddlHospital.SelectedValue) : null;
 		item.VALOR = Convert.ToDecimal(txtValor.Text);
-		item.DATA_PLANTAO = DateTime.ParseExact(txtDataPlantao.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+		item.DATA = DateTime.ParseExact(txtDataPlantao.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 		item.DATA_PAGAMENTO = DateTime.ParseExact(txtDataPagamento.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 		item.CNPJ = chkCNPJ.Checked ? true : false;
 		item.INSS = chkINSS.Checked ? true : false;
@@ -123,7 +123,7 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Editar : System.Web.UI.P
 		txtValor.Text = Convert.ToString(item.VALOR);
 		chkCNPJ.Checked = item.CNPJ == true;
 		chkINSS.Checked = item.INSS == true;
-		txtDataPlantao.Text = item.DATA_PLANTAO.Value.ToString("dd/MM/yyyy");
+		txtDataPlantao.Text = item.DATA.Value.ToString("dd/MM/yyyy");
 		txtDataPagamento.Text = item.DATA_PAGAMENTO.Value.ToString("dd/MM/yyyy");
 		chkRecebido.Checked = item.RECEBIDO == true;
 	}
@@ -142,7 +142,7 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Editar : System.Web.UI.P
 				inss = new INSS();
 				inss.PLANTAO_ID = item.PLANTAO_ID;
 				inss.VALOR = item.VALOR * (decimal)0.11; //11%
-				inss.DATA_INSS = item.DATA_PLANTAO;
+				inss.DATA_INSS = item.DATA;
 				inss.DATA_CADASTRO = DateTime.Now;
 				INSSService.Inserir(inss);
 			}

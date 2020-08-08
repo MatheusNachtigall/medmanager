@@ -87,7 +87,6 @@
                         <col />
                         <col width="120" />
                         <col width="180" />
-                        <col width="180" />
                         <col width="80" />
                         <col width="80" />
                         <col width="80" />
@@ -99,7 +98,6 @@
                         <th>Hospital</th>
                         <th>Valor (R$)</th>
                         <th>Data do Plantão</th>
-                        <th>Data do Pagamento</th>
                         <th>INSS</th>
                         <th>CNPJ</th>
                         <th>Recebido</th>
@@ -114,7 +112,6 @@
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlHospital"></asp:Literal></td>
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlValor"></asp:Literal></td>
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlDataPlantao"></asp:Literal></td>
-                        <td class="td-detalhe"><asp:Literal runat="server" ID="ltlDataPagamento"></asp:Literal></td>
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlINSS"></asp:Literal></td>
                         <td class="td-detalhe"><asp:Literal runat="server" ID="ltlCNPJ"></asp:Literal></td>
                         <td class="td-detalhe td-valor"><asp:Literal runat="server" ID="ltlRecebido"></asp:Literal></td>

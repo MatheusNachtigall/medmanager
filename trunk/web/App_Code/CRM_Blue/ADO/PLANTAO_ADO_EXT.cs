@@ -71,9 +71,9 @@ namespace CRM_Blue.ADO
                 {
                     db.AddInParameter(cmd, "@INSS", DbType.Boolean, filtro.INSS);
                 }
-                if (filtro.DATA_PLANTAO != null)
+                if (filtro.DATA != null)
                 {
-                    db.AddInParameter(cmd, "@DATA_PLANTAO_INI", DbType.DateTime, filtro.DATA_PLANTAO);
+                    db.AddInParameter(cmd, "@DATA_PLANTAO_INI", DbType.DateTime, filtro.DATA);
                 }
                 if (DATA_FIM != null)
                 {
@@ -124,7 +124,7 @@ namespace CRM_Blue.ADO
             reg.VALOR = ((row["PLANTAO_VALOR"] != DBNull.Value)?Convert.ToDecimal(row["PLANTAO_VALOR"].ToString()):0);
             reg.CNPJ = ((row["PLANTAO_CNPJ"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_CNPJ"].ToString()):null);
             reg.INSS = ((row["PLANTAO_INSS"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_INSS"].ToString()):null);
-            reg.DATA_PLANTAO = ((row["PLANTAO_DATA_PLANTAO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_PLANTAO"].ToString()):null);
+            reg.DATA = ((row["PLANTAO_DATA_PLANTAO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_PLANTAO"].ToString()):null);
             reg.DATA_PAGAMENTO = ((row["PLANTAO_DATA_PAGAMENTO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_PAGAMENTO"].ToString()):null);
             reg.DATA_CADASTRO = ((row["PLANTAO_DATA_CADASTRO"] != DBNull.Value)?(DateTime?)Convert.ToDateTime(row["PLANTAO_DATA_CADASTRO"].ToString()):null);
             reg.RECEBIDO = ((row["PLANTAO_RECEBIDO"] != DBNull.Value)?(Boolean?)Convert.ToBoolean(row["PLANTAO_RECEBIDO"].ToString()):null);

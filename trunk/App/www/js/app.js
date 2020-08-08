@@ -1,5 +1,6 @@
 var TESTE;
 var PLANTOES = null;
+var HOSPITAIS = null;
 var PLANTOES_2 = null;
 var LP = null;
 let calendar = null;
@@ -24,39 +25,42 @@ $(function() {
     });
 
     $('#modal-inserir-plantao .modal-btn-confirmar').click(function() {
-        PREP_INSERIR_PLANTAO();
+        REQ_INSERIR_PLANTAO();
+        // PREP_INSERIR_PLANTAO();
     });
 
-    $("#btn-limpar").on("click", function () {
-        clearInserirPlantaoFields();
-    });
-        
-    $('#modal-confirmar-recebimento .modal-btn-confirmar').click(function() {
-        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
-        REQ_MARCAR_PLANTAO_RECEBIDO(plantao_id);
-    });
-
-    $('#modal-editar-plantao .modal-btn-confirmar').click(function() {
-        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+    $('#calendar-editar-plantao .btn-editar').click(function() {
+        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').data('id'));
         let plantao = LP.find( el => el.PLANTAO_ID == plantao_id )
-        
+        console.log(plantao_id);
+        console.log(plantao);
         $('#id').val(plantao_id)
         $('#select-hospital').val(plantao.HOSPITAL_ID);
+        $('#data_plantao').val(plantao.DATA.replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$3-$1-$2'));
+        $('#hora_plantao').val(plantao.HORARIO);
+        $('#select-periodo').val(plantao.PERIODO);
+        $('#plantao-add').addClass('disabled');
         $( 'select' ).formSelect();
-        $('#data_plantao').val(plantao.DATA_PLANTAO.replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$3-$1-$2'));
-        $('#data_pagamento').val(plantao.DATA_PAGAMENTO.replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$3-$1-$2'));
+        
+        //$('#data_pagamento').val(plantao.DATA_PAGAMENTO.replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$3-$1-$2'));
         $("#INSS").prop('checked', plantao.INSS);
         $("#CNPJ").prop('checked', plantao.CNPJ);
         $('#valor').val(plantao.VALOR.toFixed(2).toString().replace('.',','));
+        $('#valor').siblings('label').addClass("active");
         $('.tabs').tabs('select', 'adicionar_plantao');
     });
-
-    $('#modal-confirmar-exclusao .modal-btn-confirmar').click(function() {
-        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').text());
+    
+    $('#calendar-editar-plantao .btn-excluir').click(function () {
+        $('#calendar-confirmar-exclusao .modal-id').data('id',$($(this).closest('.modal')).find('.modal-id').data('id'));
+        $('#calendar-confirmar-exclusao').modal('open')
+    });
+    
+    $('#calendar-confirmar-exclusao .btn-excluir').click(function() {
+        let plantao_id =  parseInt($($(this).closest('.modal')).find('.modal-id').data('id'));
         REQ_EXCLUIR_PLANTAO(plantao_id);
     });
 
-    $('#principal .select-mes').on('change', function(){
+    $('#relatorio_mensal .select-mes').on('change', function(){
         let select_value = $(this).val();
         let lstPlantoes = PLANTOES[select_value.split('/')[1]][select_value.split('/')[0]];
         window.myPie.destroy();
@@ -85,6 +89,7 @@ $(function() {
     $('ul.tabs').on('click', 'a.tab-calendar', function(e) {
         calendar.render();
     });
+    calendar.render();
 });
 
 let startMaterialize = function () {
@@ -97,11 +102,11 @@ let startMaterialize = function () {
 
 let arrangePlantoes = function (lstPlantoes) {
     PLANTOES = lstPlantoes.reduce(function (r, o) {
-        var m = o.DATA_PLANTAO.split(('-'))[2];
+        var m = o.DATA.split(('-'))[2];
         if (r[m]){
-            r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR, RECEBIDO: o.RECEBIDO})
+            r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA: o.DATA, COR: o.COR, RECEBIDO: o.RECEBIDO})
         } else {
-            r[m] = [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA_PLANTAO: o.DATA_PLANTAO, COR: o.COR, RECEBIDO: o.RECEBIDO}];
+            r[m] = [{HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, DATA: o.DATA, COR: o.COR, RECEBIDO: o.RECEBIDO}];
         }
         return r;
     }, {});
@@ -109,7 +114,7 @@ let arrangePlantoes = function (lstPlantoes) {
     
     temp.forEach(element => {
         var mes = element.reduce(function (r, o) {
-            var m = new Date(o.DATA_PLANTAO).toLocaleString('default', { month: 'long'}).toString();
+            var m = new Date(o.DATA).toLocaleString('default', { month: 'long'}).toString();
             if (r[m]){
                 r[m].push({HOSPITAL: o.HOSPITAL, VALOR: o.VALOR, COR: o.COR, RECEBIDO: o.RECEBIDO});
             } else {
@@ -117,7 +122,7 @@ let arrangePlantoes = function (lstPlantoes) {
             }
             return r;
         }, {});
-        PLANTOES[element[0].DATA_PLANTAO.split(('-'))[2]] = mes
+        PLANTOES[element[0].DATA.split(('-'))[2]] = mes
     });
 }
 
@@ -162,20 +167,20 @@ let buildHospitalSelect = function (FullList) {
     });
     $('#select-hospital').html(selectHTML);
     $( 'select' ).formSelect();
-    $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
+    //$("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
 }
 
 
 let buildDetailedPlantaoList = function () {
     var HTML = '';
-    const sortedPlantoes = LP.sort((a, b) => new Date(a.DATA_PLANTAO) - new Date(b.DATA_PLANTAO))
+    const sortedPlantoes = LP.sort((a, b) => new Date(a.DATA) - new Date(b.DATA))
 
     sortedPlantoes.forEach(el => {
         HTML += '<div class="row plantao-id-' + el.PLANTAO_ID + '">';
         HTML += '   <div class="plantao-info col s12">';
         HTML += '       <div class="card ' + (el.RECEBIDO ? 'light-green' : 'red') + ' lighten-3">';
         HTML += '           <div class="card-content">';
-        HTML += '               <span class="card-title plantao-data fw700">' + new Date(el.DATA_PLANTAO).toLocaleDateString() + '</span>';
+        HTML += '               <span class="card-title plantao-data fw700">' + new Date(el.DATA).toLocaleDateString() + '</span>';
         HTML += '               <div class="fixed-action-btn" style="position:relative; float:right; bottom:50px; right:-20px">';
         HTML += '                   <a class="btn-floating waves-effect waves-light green darken-4"><i class="material-icons">more_vert</i></a>';
         HTML += '                   <ul class="fab-options">';
@@ -204,7 +209,7 @@ let buildDetailedPlantaoList = function () {
     for (var i = 0; i < sortedPlantoes.length; i++) {
         var $item = $('.plantao-id-' + sortedPlantoes[i].PLANTAO_ID);
         $item.find('.plantao-info').data('id', sortedPlantoes[i].PLANTAO_ID);
-        $item.find('.plantao-info').data('data', sortedPlantoes[i].DATA_PLANTAO);
+        $item.find('.plantao-info').data('data', sortedPlantoes[i].DATA);
         $item.find('.plantao-info').data('hospital', sortedPlantoes[i].HOSPITAL);
         $item.find('.plantao-info').data('valor', sortedPlantoes[i].VALOR.toFixed(2).toString().replace('.',','));
     }
@@ -218,98 +223,31 @@ let buildDetailedPlantaoList = function () {
         let plantao_info =  $(this).closest(".plantao-info")
         $('#modal-confirmar-recebimento .modal-id').html($(plantao_info).data('id'));
         $('#modal-confirmar-recebimento .modal-hospital').html($(plantao_info).data('hospital'));
-        $('#modal-confirmar-recebimento .modal-data-plantao').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
+        $('#modal-confirmar-recebimento .modal-data').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
         $('#modal-confirmar-recebimento .modal-valor').html($(plantao_info).data('valor'));
         $('#modal-confirmar-recebimento').modal('open')
     });
-    
-    $('.btn-editar').click(function() {
-        let plantao_info =  $(this).closest(".plantao-info")
-        $('#modal-editar-plantao .modal-id').html($(plantao_info).data('id'));
-        $('#modal-editar-plantao .modal-hospital').html($(plantao_info).data('hospital'));
-        $('#modal-editar-plantao .modal-data-plantao').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
-        $('#modal-editar-plantao .modal-valor').html($(plantao_info).data('valor'));
-        $('#modal-editar-plantao').modal('open');
-        //$('.adicionar_plantao_h5').html('Atualizar Plantão');
-    });
-    
-    $('.btn-excluir').click(function() {
-        let plantao_info =  $(this).closest(".plantao-info")
-        $('#modal-confirmar-exclusao .modal-id').html($(plantao_info).data('id'));
-        $('#modal-confirmar-exclusao .modal-hospital').html($(plantao_info).data('hospital'));
-        $('#modal-confirmar-exclusao .modal-data-plantao').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
-        $('#modal-confirmar-exclusao .modal-valor').html($(plantao_info).data('valor'));
-        $('#modal-confirmar-exclusao').modal('open')
-    });
 
-    $('.btn-download').click(function() {
-        let plantao_info =  $(this).closest(".plantao-info")
-        $('#modal-download .modal-id').html($(plantao_info).data('id'));
-        $('#modal-download .modal-data-plantao').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
-        let plantao_anexos = LP.find( el => el.PLANTAO_ID == $(plantao_info).data('id')).ANEXO
-        var modalTextHTML = "";
-        for (let i = 0; i < plantao_anexos.length; i++) {
-             modalTextHTML += '   <a class="pdf-link" href="' + BACKEND + 'Uploads/' + $(plantao_info).data('id') + '/' + plantao_anexos[i].ARQUIVO + '" target="_blank">' + plantao_anexos[i].ARQUIVO + '</a><br>';
-        }
-        $('#modal-download .modal-text').html(modalTextHTML);      
-        $('#modal-download').modal('open');
-    });
+    // $('.btn-download').click(function() {
+    //     let plantao_info =  $(this).closest(".plantao-info")
+    //     $('#modal-download .modal-id').html($(plantao_info).data('id'));
+    //     $('#modal-download .modal-data').html($(plantao_info).data('data').replace(/(\d\d)-(\d\d)-(\d\d\d\d)/,'$2/$1/$3'));
+    //     let plantao_anexos = LP.find( el => el.PLANTAO_ID == $(plantao_info).data('id')).ANEXO
+    //     var modalTextHTML = "";
+    //     for (let i = 0; i < plantao_anexos.length; i++) {
+    //          modalTextHTML += '   <a class="pdf-link" href="' + BACKEND + 'Uploads/' + $(plantao_info).data('id') + '/' + plantao_anexos[i].ARQUIVO + '" target="_blank">' + plantao_anexos[i].ARQUIVO + '</a><br>';
+    //     }
+    //     $('#modal-download .modal-text').html(modalTextHTML);      
+    //     $('#modal-download').modal('open');
+    // });
+
 }
 
-let validatePlantao = function () {
-    var valid = true;
-    $("#select-hospital").removeClass('invalid');
-    $("#data_plantao").removeClass('invalid');
-    $("#data_pagamento").removeClass('invalid');
-    $("#valor").removeClass('invalid');
-    $('.input-field .error-info').remove();
-    
-    if ($("#select-hospital").val() == '') {
-        $("#select-hospital").addClass('invalid').change();
-        $("#select-hospital").parent().parent('.input-field').append('<span class="error-info">* Campo obrigatório</span>');
-        valid = false;
-    }
-    if ($("#data_plantao").val() == '') {
-        $("#data_plantao").addClass('invalid').change();
-        $("#data_plantao").parent('.input-field').append('<span class="error-info">* Campo obrigatório</span>');
-        valid = false;
-    }
-    if ($("#data_pagamento").val() == '') {
-        $("#data_pagamento").addClass('invalid').change();
-        $("#data_pagamento").parent('.input-field').append('<span class="error-info">* Campo obrigatório</span>');
-        valid = false;
-    }
-    if ($("#valor").val() == '') {
-        $("#valor").addClass('invalid').change();
-        $("#valor").parent('.input-field').append('<span class="error-info">* Campo obrigatório</span>');
-        valid = false;
-    }
-    if (valid) {
-        $('#modal-inserir-plantao .modal-hospital').html($("#select-hospital option:selected").html());
-        $('#modal-inserir-plantao .modal-data-plantao').html($("#data_plantao").val().replace(/(\d\d\d\d)-(\d\d)-(\d\d)/,'$3/$2/$1'));
-        $('#modal-inserir-plantao .modal-data-pagamento').html($("#data_pagamento").val().replace(/(\d\d\d\d)-(\d\d)-(\d\d)/,'$3/$2/$1'));
-        $('#modal-inserir-plantao .modal-INSS').html(($("#INSS").prop('checked') ? "Sim" : "Não"));
-        $('#modal-inserir-plantao .modal-CNPJ').html(($("#CNPJ").prop('checked') ? "Sim" : "Não"));
-        $('#modal-inserir-plantao .modal-valor').html($("#valor").val());
-        $('#modal-inserir-plantao').modal('open')
-    } else {
-        $('.error:first').focus();
-    }
-    return false;
-}
 
-let clearInserirPlantaoFields = function () {
-    $('#select-hospital').val("");
-    $( 'select' ).formSelect();
-    $('#data_plantao').val('');
-    $('#data_pagamento').val('');
-    $('#data_plantao').val('');
-    $('input[type="checkbox"]').prop("checked",false)
-    $('#valor').val('');
-    Dropzone.forElement("#dragAndDropField").removeAllFiles();
-    $('#trash-can').addClass('hidden');
-    $('.dz-default.dz-message').css('display','block');
-}
+
+
+
+
 
 
 
@@ -384,4 +322,7 @@ var startDropzone = function(){
                     '.PDF']
         return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName.toUpperCase());
     }
+
+    
+
 }

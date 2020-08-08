@@ -8,7 +8,7 @@ let REQ_LOAD_PLANTOES = function () {
             let month = new Date().toLocaleString('default', { month: 'long', year: 'numeric' }).toString().replace(' de ','/');
             let lstPlantoes = PLANTOES[month.split('/')[1]][month.split('/')[0]];
             buildChartAndGraph(lstPlantoes);
-            $('#select-mes').val(month);
+            $('.select-mes').val(month);
             $( 'select' ).formSelect();
             buildDetailedPlantaoList();
             
@@ -18,35 +18,43 @@ let REQ_LOAD_PLANTOES = function () {
     });
 }
 
-let REQ_INSERIR_PLANTAO = function (media) {
-    WS.InserirRequisicao('INSERIR_PLANTAO', {
+let REQ_INSERIR_PLANTAO = function () {
+
+    arrDatas = [];
+    arrHorarios = [];
+    arrPeriodos = [];
+    arrValores = [];
+    
+    $('.field-multiple .field').each(function(){
+        arrDatas[arrDatas.length] = $('input[type=date]', $(this)).val();
+        arrHorarios[arrHorarios.length] = $('input[type=time]', $(this)).val();
+        arrPeriodos[arrPeriodos.length] = $('select', $(this)).val();
+        arrValores[arrValores.length] = $('input[type=text].money', $(this)).val();
+    });
+
+    var metodo = ($('#id').val() == "" ? 'INSERIR_PLANTAO' : 'EDITAR_PLANTAO')
+
+    WS.InserirRequisicao(metodo, {
         HOSPITAL_ID:    $('#select-hospital').val(),
-        DATA_PLANTAO:   $('#data_plantao').val(),
-        DATA_PAGAMENTO: $('#data_pagamento').val(),
-        VALOR: $('#valor').val(),
+        DATA:   arrDatas,
+        HORARIO: arrHorarios,
+        PERIODO: arrPeriodos,
+        VALOR: arrValores,
         INSS: $("#INSS").prop('checked'),
         CNPJ: $("#CNPJ").prop('checked'),
-        MEDIA: media,
         PLANTAO_ID: ($('#id').val() == "" ? 0 : $('#id').val())
     }, function(ret) {
         if (ret.sucesso){
-            $('#select-hospital').val("");
-            $( 'select' ).formSelect();
-            $('#data_plantao').val('');
-            $('#data_pagamento').val('');
-            $('#data_plantao').val('');
-            $('input[type="checkbox"]').prop("checked",false)
-            $('#valor').val('');
-            Dropzone.forElement("#dragAndDropField").removeAllFiles();
-            $('#trash-can').addClass('hidden');
-            $('.dz-default.dz-message').css('display','block');
+            // $('input').val('');
+            // $('input[type="checkbox"]').prop("checked",false)
+            clearInserirPlantaoFields();
             if ($('#id').val() == ""){
                 M.toast({html: 'Plantão inserido!', classes: 'rounded green fw700'});            
             } else {
                 M.toast({html: 'Plantão atualizado!', classes: 'rounded yellow black-text fw700'});
             }
             $('#id').val('');
-            $('.tabs').tabs('select', 'principal');
+            $('.tabs').tabs('select', 'calendar');
             REQ_LOAD_PLANTOES();
         } else {
             M.toast({html: 'Ocorreu um erro!', classes: 'rounded red fw700'});
@@ -70,6 +78,7 @@ let REQ_MARCAR_PLANTAO_RECEBIDO = function (plantao_id) {
 }
 
 let REQ_EXCLUIR_PLANTAO = function (plantao_id) {
+    $('.modal').modal('close');
     WS.InserirRequisicao('EXCLUIR_PLANTAO', {
         PLANTAO_ID:    plantao_id,
     }, function(ret) {
@@ -108,9 +117,7 @@ let PREP_INSERIR_PLANTAO = function () {
             contentType: false,
             processData: false,
             success: function(data) {
-                console.log('2: ',data);
                 var ret = JSON.parse(data);
-                console.log('3: ',ret);
                 if (ret.sucesso) {
                     done--;
                     media.push(ret.fileName);

@@ -109,8 +109,9 @@ namespace CRM_Blue
                     HOSPITAL_ID = lstPlantao[i].HOSPITAL_ID,
                     HOSPITAL = lstPlantao[i].HOSPITAL.NOME,
                     VALOR = (Math.Round((double)lstPlantao[i].VALOR, 2)),
-                    DATA_PLANTAO = ((DateTime)lstPlantao[i].DATA_PLANTAO).ToString("MM-dd-yyyy"),
-                    DATA_PAGAMENTO = ((DateTime)lstPlantao[i].DATA_PAGAMENTO).ToString("MM-dd-yyyy"),
+                    DATA = ((DateTime)lstPlantao[i].DATA).ToString("MM-dd-yyyy"),
+                    HORARIO = lstPlantao[i].HORARIO,
+                    PERIODO = lstPlantao[i].PERIODO,
                     CNPJ = lstPlantao[i].CNPJ,
                     INSS = lstPlantao[i].INSS,
                     COR = lstPlantao[i].HOSPITAL.COR,
@@ -130,7 +131,7 @@ namespace CRM_Blue
 			DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddMinutes(-1);
 
 			PLANTAO filtro = new PLANTAO();
-			filtro.DATA_PLANTAO = firstDayOfMonth;
+			filtro.DATA = firstDayOfMonth;
 
 			List<PLANTAO> lstPlantaoMes = new PLANTAO_Service_EXT().Listar(filtro, lastDayOfMonth);
 			
@@ -152,9 +153,10 @@ namespace CRM_Blue
         public class INSERIR_PLANTAO_DATA
         {
             public int HOSPITAL_ID { get; set; }
-            public string DATA_PLANTAO { get; set; }
-            public string DATA_PAGAMENTO { get; set; }
-            public string VALOR { get; set; }
+            public string[] DATA { get; set; }
+            public string[] HORARIO { get; set; }
+            public int[] PERIODO { get; set; }
+            public string[] VALOR { get; set; }
             public bool INSS { get; set; }
             public bool CNPJ { get; set; }
             public string[] MEDIA { get; set; }
@@ -162,127 +164,234 @@ namespace CRM_Blue
         }
         public static string INSERIR_PLANTAO(WS_Input ws_input)
         {
-            String ret = "";
             INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
 
             PLANTAO plantao = null;
             PLANTAO_Service pService = new PLANTAO_Service();
 
-            if (input.PLANTAO_ID == 0)
+            for (int i = 0; i < input.DATA.Length; i++)
             {
-                plantao = new PLANTAO();
-            }
-            else
-            {
-                plantao = pService.Carregar(input.PLANTAO_ID);
-            }
-            try
-            {
-                plantao.HOSPITAL_ID = input.HOSPITAL_ID;
-                plantao.VALOR = Convert.ToDecimal(input.VALOR);
-                plantao.DATA_PLANTAO = DateTime.ParseExact(input.DATA_PLANTAO, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                plantao.DATA_PAGAMENTO = DateTime.ParseExact(input.DATA_PAGAMENTO, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                plantao.DATA_CADASTRO = DateTime.Now;
-                plantao.INSS = input.INSS;
-                plantao.CNPJ = input.CNPJ;
-                plantao.RECEBIDO = false;
-
-                if (input.PLANTAO_ID == 0)
+                try
                 {
+                    plantao = new PLANTAO();
+                    plantao.HOSPITAL_ID = input.HOSPITAL_ID;
+                    plantao.DATA = DateTime.ParseExact(input.DATA[i], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    plantao.HORARIO = input.HORARIO[i];
+                    plantao.PERIODO = input.PERIODO[i];
+                    plantao.VALOR = Convert.ToDecimal(input.VALOR[i]);
+                    plantao.DATA_PAGAMENTO = null;
+                    plantao.DATA_CADASTRO = DateTime.Now;
+                    plantao.INSS = input.INSS;
+                    plantao.CNPJ = input.CNPJ;
+                    plantao.RECEBIDO = false;
+
                     plantao = pService.Inserir(plantao);
                 }
-                else
+                catch (Exception)
                 {
-                    plantao = pService.Atualizar(plantao);
+                    return new JavaScriptSerializer().Serialize(new { sucesso = false });
                 }
-                
-                ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
             }
-            catch (Exception)
+            return new JavaScriptSerializer().Serialize(new { sucesso = true });
+        }
+
+
+        public static string EDITAR_PLANTAO(WS_Input ws_input)
+        {
+            String ret;
+            INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
+
+            PLANTAO plantao = null;
+            PLANTAO_Service pService = new PLANTAO_Service();
+
+            if (input.DATA.Length > 1)
             {
                 ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
             }
-
-            if (input.PLANTAO_ID != 0)
+            else 
             {
-                List <ANEXO> oldAnexos = null;
-                oldAnexos = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
-
-                //Se existem anexos anteriores vinculados a esse plantao...excluir
-                if (oldAnexos != null)
+                plantao = pService.Carregar(input.PLANTAO_ID);
+                try
                 {
-                    new ANEXO_Service().Excluir(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+                    plantao.HOSPITAL_ID = input.HOSPITAL_ID;
+                    plantao.DATA = DateTime.ParseExact(input.DATA[0], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    plantao.HORARIO = input.HORARIO[0];
+                    plantao.PERIODO = input.PERIODO[0];
+                    plantao.VALOR = Convert.ToDecimal(input.VALOR[0]);
+                    plantao.DATA_PAGAMENTO = null;
+                    plantao.DATA_CADASTRO = DateTime.Now;
+                    plantao.INSS = input.INSS;
+                    plantao.CNPJ = input.CNPJ;
+                    plantao.RECEBIDO = false;
+                    plantao = pService.Atualizar(plantao);
+                    ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
                 }
-            }
-
-            if (input.MEDIA != null)
-            {
-                if (input.MEDIA.Length > 0)
+                catch (Exception)
                 {
-                    for (int i_media = 0; i_media < input.MEDIA.Length; i_media++)
-                    {
-                        //TMP_<ID>_<ORDEM>_<FILENAME>
-                        string ext = Path.GetExtension(input.MEDIA[i_media]).ToUpper();
-                        int sizeToRemove = 4 ; // 'TMP_'
-                        string FileName = input.MEDIA[i_media].Remove(0, sizeToRemove); //<ORDEM>_<FILENAME>.JPG
-                        int anexo_ordem = Int32.Parse(FileName.Substring(0, FileName.IndexOf("_")));
-                        FileName = FileName.Remove(0, (FileName.IndexOf("_")+1)); //<FILENAME>.JPG
-                        //string newFileName = String.Concat(plantao.PLANTAO_ID.ToString(), "_", tempFileName);
-                        int anexo_tipo = 0;
-                        string temp_path = HttpContext.Current.Server.MapPath("~/Uploads/");
-                        string path = String.Concat(HttpContext.Current.Server.MapPath("~/Uploads/"), plantao.PLANTAO_ID, '/');
-                        try
-                        {
-                            if (!Directory.Exists(path))
-                            {
-                                Directory.CreateDirectory(path);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            LogError.GravarErro("Creating Directory: ", ex);
-                        }
-
-                        //TODO: CRIAR UMA PASTA PARA CADA USUARIO E DEPOIS UMA PASTA PARA CADA PLANTAO
-                        if (".JPG .JPEG .PNG .DIB .WEBP .JPEG .SVGZ .GIF .ICO .SVG .TIF .XBM .BMP .JFIF .PJPEG .PJP .TIFF".IndexOf(ext) != -1)
-                        {
-                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Imagem/");
-                            anexo_tipo = 1;
-                        }
-                        if (".MP4 .M4V .OGV .MPEG .MPG .WMV .MOV .OGM .WEBM .ASX .AVI".IndexOf(ext) != -1)
-                        {
-                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Video/");
-                            anexo_tipo = 2;
-                        }
-                        if (".PDF".IndexOf(ext) != -1)
-                        {
-                            //path = HttpContext.Current.Server.MapPath("~/Uploads/Pdf/");
-                            anexo_tipo = 3;
-                        }
-
-                        if (File.Exists(String.Concat(temp_path, input.MEDIA[i_media])))
-                        {
-                            try
-                            {
-                                File.Move(String.Concat(temp_path, input.MEDIA[i_media]), String.Concat(path, FileName));
-                            }
-                            catch (Exception ex)
-                            {
-                                LogError.GravarErro("Saving FILE: ", ex);
-                            }
-                        }
-
-                        ANEXO anexo = new ANEXO();
-                        anexo.PLANTAO_ID = plantao.PLANTAO_ID;
-                        anexo.TIPO = anexo_tipo;
-                        anexo.ARQUIVO = FileName;
-                        anexo.ORDEM = anexo_ordem;
-                        new ANEXO_Service().Inserir(anexo);
-                    }
+                    ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
                 }
             }
             return ret;
         }
+
+
+        //public static string INSERIR_PLANTAO(WS_Input ws_input)
+        //{
+        //    String ret = "";
+        //    INSERIR_PLANTAO_DATA input = new JavaScriptSerializer().Deserialize<INSERIR_PLANTAO_DATA>(ws_input.data);
+
+        //    PLANTAO plantao = null;
+        //    PLANTAO_Service pService = new PLANTAO_Service();
+
+        //    if (input.DATA.Length > 1)
+        //    {
+        //        for (int i = 0; i < input.DATA.Length; i++)
+        //        {
+        //            try
+        //            {
+        //                plantao = new PLANTAO();
+        //                plantao.HOSPITAL_ID = input.HOSPITAL_ID;
+        //                plantao.DATA = DateTime.ParseExact(input.DATA[i], "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        //                plantao.HORARIO = input.HORARIO[i];
+        //                plantao.PERIODO = input.PERIODO[i];
+        //                plantao.VALOR = Convert.ToDecimal(input.VALOR[i]);
+        //                plantao.DATA_PAGAMENTO = null;
+        //                plantao.DATA_CADASTRO = DateTime.Now;
+        //                plantao.INSS = input.INSS;
+        //                plantao.CNPJ = input.CNPJ;
+        //                plantao.RECEBIDO = false;
+
+        //                plantao = pService.Inserir(plantao);
+        //            }
+        //            catch (Exception)
+        //            {
+        //                ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
+        //            }
+        //        }
+        //    }
+
+
+        //    if (input.PLANTAO_ID == 0)
+        //    {
+        //        plantao = new PLANTAO();
+        //    }
+        //    else
+        //    {
+        //        plantao = pService.Carregar(input.PLANTAO_ID);
+        //    }
+        //    try
+        //    {
+        //        plantao.HOSPITAL_ID = input.HOSPITAL_ID;
+        //        plantao.VALOR = Convert.ToDecimal(input.VALOR);
+        //        plantao.DATA = DateTime.ParseExact(input.DATA, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        //        plantao.DATA_PAGAMENTO = null;
+        //        plantao.PERIODO = input.PERIODO;
+        //        plantao.DATA_CADASTRO = DateTime.Now;
+        //        plantao.INSS = input.INSS;
+        //        plantao.CNPJ = input.CNPJ;
+        //        plantao.RECEBIDO = false;
+
+        //        if (input.PLANTAO_ID == 0)
+        //        {
+        //            plantao = pService.Inserir(plantao);
+        //        }
+        //        else
+        //        {
+        //            plantao = pService.Atualizar(plantao);
+        //        }
+
+        //        ret = new JavaScriptSerializer().Serialize(new { sucesso = true });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        ret = new JavaScriptSerializer().Serialize(new { sucesso = false });
+        //    }
+
+        //    if (input.PLANTAO_ID != 0)
+        //    {
+        //        List<ANEXO> oldAnexos = null;
+        //        oldAnexos = new ANEXO_Service().Listar(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+
+        //        //Se existem anexos anteriores vinculados a esse plantao...excluir
+        //        if (oldAnexos != null)
+        //        {
+        //            new ANEXO_Service().Excluir(new ANEXO() { PLANTAO_ID = input.PLANTAO_ID });
+        //        }
+        //    }
+
+        //    if (input.MEDIA != null)
+        //    {
+        //        if (input.MEDIA.Length > 0)
+        //        {
+        //            for (int i_media = 0; i_media < input.MEDIA.Length; i_media++)
+        //            {
+        //                //TMP_<ID>_<ORDEM>_<FILENAME>
+        //                string ext = Path.GetExtension(input.MEDIA[i_media]).ToUpper();
+        //                int sizeToRemove = 4; // 'TMP_'
+        //                string FileName = input.MEDIA[i_media].Remove(0, sizeToRemove); //<ORDEM>_<FILENAME>.JPG
+        //                int anexo_ordem = Int32.Parse(FileName.Substring(0, FileName.IndexOf("_")));
+        //                FileName = FileName.Remove(0, (FileName.IndexOf("_") + 1)); //<FILENAME>.JPG
+        //                //string newFileName = String.Concat(plantao.PLANTAO_ID.ToString(), "_", tempFileName);
+        //                int anexo_tipo = 0;
+        //                string temp_path = HttpContext.Current.Server.MapPath("~/Uploads/");
+        //                string path = String.Concat(HttpContext.Current.Server.MapPath("~/Uploads/"), plantao.PLANTAO_ID, '/');
+        //                try
+        //                {
+        //                    if (!Directory.Exists(path))
+        //                    {
+        //                        Directory.CreateDirectory(path);
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    LogError.GravarErro("Creating Directory: ", ex);
+        //                }
+
+        //                //TODO: CRIAR UMA PASTA PARA CADA USUARIO E DEPOIS UMA PASTA PARA CADA PLANTAO
+        //                if (".JPG .JPEG .PNG .DIB .WEBP .JPEG .SVGZ .GIF .ICO .SVG .TIF .XBM .BMP .JFIF .PJPEG .PJP .TIFF".IndexOf(ext) != -1)
+        //                {
+        //                    //path = HttpContext.Current.Server.MapPath("~/Uploads/Imagem/");
+        //                    anexo_tipo = 1;
+        //                }
+        //                if (".MP4 .M4V .OGV .MPEG .MPG .WMV .MOV .OGM .WEBM .ASX .AVI".IndexOf(ext) != -1)
+        //                {
+        //                    //path = HttpContext.Current.Server.MapPath("~/Uploads/Video/");
+        //                    anexo_tipo = 2;
+        //                }
+        //                if (".PDF".IndexOf(ext) != -1)
+        //                {
+        //                    //path = HttpContext.Current.Server.MapPath("~/Uploads/Pdf/");
+        //                    anexo_tipo = 3;
+        //                }
+
+        //                if (File.Exists(String.Concat(temp_path, input.MEDIA[i_media])))
+        //                {
+        //                    try
+        //                    {
+        //                        File.Move(String.Concat(temp_path, input.MEDIA[i_media]), String.Concat(path, FileName));
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        LogError.GravarErro("Saving FILE: ", ex);
+        //                    }
+        //                }
+
+        //                ANEXO anexo = new ANEXO();
+        //                anexo.PLANTAO_ID = plantao.PLANTAO_ID;
+        //                anexo.TIPO = anexo_tipo;
+        //                anexo.ARQUIVO = FileName;
+        //                anexo.ORDEM = anexo_ordem;
+        //                new ANEXO_Service().Inserir(anexo);
+        //            }
+        //        }
+        //    }
+        //    return ret;
+        //}
+
+
+
+
+
 
         public class MARCAR_PLANTAO_RECEBIDO_DATA
         {
@@ -302,7 +411,7 @@ namespace CRM_Blue
             }
             catch (Exception)
             {
-                ret = new JavaScriptSerializer().Serialize(new { sucesso = false , motivo = "Não foi possível atualizar o plantão."});
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = false , motivo = "Nï¿½o foi possï¿½vel atualizar o plantï¿½o."});
             }
             return ret;
         }
@@ -324,7 +433,7 @@ namespace CRM_Blue
             }
             catch (Exception)
             {
-                ret = new JavaScriptSerializer().Serialize(new { sucesso = false, motivo = "Não foi possível excluir o plantão." });
+                ret = new JavaScriptSerializer().Serialize(new { sucesso = false, motivo = "Nï¿½o foi possï¿½vel excluir o plantï¿½o." });
             }
             return ret;
         }

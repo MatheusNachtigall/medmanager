@@ -24,11 +24,13 @@
     <script src="js/plugins/fullCalendar.min.js"></script>
     <script src="js/plugins/moment-with-locales.min.js"></script>
     <script src="js/plugins/fullcalendar_moment.js"></script>
+    <script src="js/addPlantao.js"></script>
     <script src="js/calendar.js"></script>
     <script src="js/charts_Data.js"></script>
     <script src="js/requisicoes.js"></script>
     <script src="js/app.js"></script>
     <script src="js/plugins/dropzone.js"></script>
+    <script src="js/recebimentos.js"></script>
     <script>
         
         // console.log('BACKEND: ',BACKEND);
@@ -47,18 +49,21 @@
 <body>
 
     <ul id="slide-out" class="sidenav tabs no-autoinit">
-        <li><div class="user-view">
-          <div class="background">
-            <img src="images/sidebar_img.jpg">
-          </div>
-          <a href="#user"><img class="circle" src="images/elisa.png"></a>
-          <a href="#name"><span class="white-text name">Elisa Knabach</span></a>
-          <a href="#email"><span class="white-text email">elisa.knabach@gmail.com</span></a>
-        </div></li>
-        <li class="tab side"><a class="waves-effect active" href="#principal">Tela Inicial</a></li>
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="images/sidebar_img.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="images/elisa.png"></a>
+                <a href="#name"><span class="white-text name">Elisa Knabach</span></a>
+                <a href="#email"><span class="white-text email">elisa.knabach@gmail.com</span></a>
+            </div>
+        </li>
+        <li class="tab side"><a class="waves-effect tab-calendar active" href="#calendar"><i class="material-icons">today</i>Agenda</a></li>
         <li class="tab side"><a class="waves-effect" href="#adicionar_plantao"><i class="material-icons">add_circle</i>Adicionar Plantão</a></li>
-        <li class="tab side"><a class="waves-effect" href="#plantoes_detalhes"><i class="material-icons">show_chart</i>Plantões</a></li>
-        <li class="tab side"><a class="waves-effect tab-calendar" href="#calendar"><i class="material-icons">today</i>Agenda</a></li>
+        <li class="tab side"><a class="waves-effect " href="#relatorio_mensal"><i class="material-icons">show_chart</i>Relatório Mensal</a></li>
+        <li class="tab side"><a class="waves-effect" href="#plantoes_detalhes">Plantões</a></li>
+        <li class="tab side"><a class="waves-effect" href="#recebimentos">Recebimentos</a></li>
         <li><div class="divider"></div></li>
       <!-- <li class="tab no-padding">
         <ul class="collapsible collapsible-accordion">
@@ -84,7 +89,7 @@
     </div>
     <div class="app">
         <div class="container">
-            <div class="section" id="principal">
+            <div class="section" id="relatorio_mensal">
                 <div class="row">
                     <div class="input-field col s12">
                         <select class="select-mes"></select>
@@ -102,10 +107,6 @@
                     </div>
                 </div>
             </div>
-            
-            
-            
-
 
             <div class="section" id="plantoes_detalhes">
                 <div class="row">
@@ -121,7 +122,7 @@
                         <h5 >Confirmar recebimento?</h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
                         <p>Hospital: <span class='modal-hospital'></span></p>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                        <p>Data Plantão: <span class='modal-data'></span></p>
                         <p>Valor: <span class='modal-valor'></span></p>
                     </div>
                     <div class="modal-footer green lighten-5">
@@ -135,7 +136,7 @@
                         <h5 >Editar plantão?</h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
                         <p>Hospital: <span class='modal-hospital'></span></p>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                        <p>Data Plantão: <span class='modal-data'></span></p>
                         <p>Valor: <span class='modal-valor'></span></p>
                     </div>
                     <div class="modal-footer yellow lighten-4">
@@ -149,7 +150,7 @@
                         <h5 class='red-text'>Deseja excluir esse plantão?</h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
                         <p>Hospital: <span class='modal-hospital'></span></p>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                        <p>Data Plantão: <span class='modal-data'></span></p>
                         <p>Valor: <span class='modal-valor'></span></p>
                     </div>
                     <div class="modal-footer red lighten-5">
@@ -160,7 +161,7 @@
 
                 <div id="modal-download" class="modal blue lighten-5">
                     <div class="modal-content">
-                        <h5 >Anexos Plantão <span class='modal-data-plantao'></span></h5>
+                        <h5 >Anexos Plantão <span class='modal-data'></span></h5>
                         <p class='hidden'>Id: <span class='modal-id'></span></p>
                         <p class='modal-text'></p>
                     </div>
@@ -185,14 +186,58 @@
                                     <label>Hospital:</label>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input type="date" name="data_plantao" id="data_plantao">
-                                    <label for="data_plantao">Data Plantão:</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input type="date" name="data_pagamento" id="data_pagamento">
-                                    <label for="data_pagamento">Data Pagamento:</label>
+                            <div class="field-multiple">
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="input-field col s6">
+                                            <input type="date" name="data_plantao" id="data_plantao" class="requireValidation">
+                                            <label for="data_plantao">Data:</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <input type="time" name="hora_plantao" id="hora_plantao" class="requireValidation">
+                                            <label for="Hora_plantao">Horário:</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <select id="select-periodo" name="select-periodo" class="periodo requireValidation">
+                                                <option value=''></option>
+                                                <option value=6>6 Horas</option>
+                                                <option value=12>12 Horas</option>
+                                                <option value=24>24 Horas</option>
+                                                <option disabled>──────────</option>
+                                                <option value=1>1 Hora</option>
+                                                <option value=2>2 Horas</option>
+                                                <option value=3>3 Horas</option>
+                                                <option value=4>4 Horas</option>
+                                                <option value=5>5 Horas</option>
+                                                <option value=7>7 Horas</option>
+                                                <option value=8>8 Horas</option>
+                                                <option value=9>9 Horas</option>
+                                                <option value=10>10 Horas</option>
+                                                <option value=11>11 Horas</option>
+                                                <option value=13>13 Horas</option>
+                                                <option value=14>14 Horas</option>
+                                                <option value=15>15 Horas</option>
+                                                <option value=16>16 Horas</option>
+                                                <option value=17>17 Horas</option>
+                                                <option value=18>18 Horas</option>
+                                                <option value=19>19 Horas</option>
+                                                <option value=20>20 Horas</option>
+                                                <option value=21>21 Horas</option>
+                                                <option value=22>22 Horas</option>
+                                                <option value=23>23 Horas</option>
+        
+                                            </select>
+                                            <label for="select-periodo">Período:</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <input id="valor" name="valor" type="text" class="money requireValidation">
+                                            <label for="valor">Valor:</label>
+                                        </div>
+                                        <a href="javascript:;" class="field-remove"></a>
+                                    </div>
+                                    <div class="center-align col s12">
+                                        <a class="black-text waves-effect waves-light btn-large yellow darken-1" id="plantao-add" >Adicionar horário</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -211,13 +256,10 @@
                             <br>
                             <br>
                             <br>
-                            <div class="input-field col s12">
-                                <input id="valor" name="valor" type="text" class="money">
-                                <label for="valor">Valor:</label>
-                            </div>
-                            <div class="input-field col s12">
+                            
+                            <!-- <div class="input-field col s12">
                                 <div id="dragAndDropField" class="dropzone"></div>
-                            </div>
+                            </div> -->
                             <div class="center-align col s12">
                                 <input class="white-text waves-effect waves-light btn-large green darken-1" type="submit" name="frm_plantao_enviar" id="frm_plantao_enviar" value="Enviar">
                             </div>
@@ -233,13 +275,35 @@
 
                 <div id="modal-inserir-plantao" class="modal">
                     <div class="modal-content">
-                        <h5 >Confirme seus dados:</h5>
-                        <p>Hospital: <span class='modal-hospital'></span></p>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
-                        <p>Data Pagamento: <span class='modal-data-pagamento'></span></p>
-                        <p>INSS: <span class='modal-INSS'></span></p>
-                        <p>CNPJ: <span class='modal-CNPJ'></span></p>
-                        <p>Valor: <span class='modal-valor'></span></p>
+                        <div class="row">
+                            <div class="center-align col s12">
+                                <h5 >Confirme seus dados:</h5>
+                            </div>
+                            <div class="center-align col s12">
+                                <p>Hospital: <span class='modal-hospital'></span></p>
+                            </div>
+                            <div class="center-align col s6">
+                                <p>INSS: <span class='modal-INSS'></span></p>
+                            </div>
+                            <div class="center-align col s6">
+                                <p>CNPJ: <span class='modal-CNPJ'></span></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Horário</th>
+                                        <th>Período</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                            
+                                <tbody></tbody>
+
+                            </table>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
@@ -254,17 +318,96 @@
                     <div id='calendar'></div>
                 </div>
 
-                <div id="modal-criar-novo-plantao" class="modal">
+                <div id="calendar-criar-novo-plantao" class="modal">
                     <div class="modal-content">
                         <h5 >Criar novo plantao?</h5>
-                        <p>Data Plantão: <span class='modal-data-plantao'></span></p>
+                        <p>Data Plantão: <span class='modal-data'></span></p>
                     </div>
                     <div class="modal-footer">
                         <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
                         <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
                     </div>
                 </div>
+
+                <div id="calendar-editar-plantao" class="modal">
+                    <div class="modal-content">
+                        <div class="row">
+                            <p class='hidden modal-id'></p>
+                            <div class="center-align col s12">
+                                <h5 class='modal-data'></h5>
+                            </div>
+                            <div class="col s12">
+                                <p>Hospital: <span class='modal-hospital'></span></p>
+                            </div>
+                            <div class="col s12">
+                                <p>Horário: <span class='modal-horario'></span></p>
+                            </div>
+                            <div class="col s12">
+                                <p>Período: <span class='modal-periodo'></span></p>
+                            </div>
+                            <div class="col s12">
+                                <p>Valor: <span class='modal-valor'></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <a class="btn-excluir btn-small red" style="float: left;">Excluir<i class="material-icons right">delete</i></a>
+                            <a class="btn-editar btn-small yellow darken-2">Editar<i class="material-icons right">mode_edit</i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="calendar-confirmar-exclusao" class="modal red lighten-5">
+                    <div class="modal-content">
+                        <h5 class='red-text'>Confirmar exclusão?</h5>
+                        <p class='hidden modal-id'></p>
+                        <p>Essa ação não poderá ser revertida</p>
+                    </div>
+                    <div class="modal-footer red lighten-5">
+                        <!-- <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a> -->
+                        <a class="btn-excluir btn-small red">Excluir<i class="material-icons right">delete</i></a>
+                    </div>
+                </div>
+
             </div>
+
+            <div class="section" id="recebimentos">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select class="select-mes"></select>
+                    </div>
+                </div>
+
+                <div class="hospitais_list"></div>
+                
+                <div id="modal-confirmar-recebimento" class="modal green lighten-5">
+                    <div class="modal-content">
+                        <h5 >Confirmar recebimento?</h5>
+                        <p class='hidden'>Id: <span class='modal-id'></span></p>
+                        <p>Hospital: <span class='modal-hospital'></span></p>
+                        <p>Data Plantão: <span class='modal-data'></span></p>
+                        <p>Valor: <span class='modal-valor'></span></p>
+                    </div>
+                    <div class="modal-footer green lighten-5">
+                        <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
+                        <a href="#!" class="modal-btn-confirmar modal-close waves-effect waves-light btn-flat green-text">Confirmar</a>
+                    </div>
+                </div>
+
+                <div id="modal-download" class="modal blue lighten-5">
+                    <div class="modal-content">
+                        <h5 >Anexos Plantão <span class='modal-data'></span></h5>
+                        <p class='hidden'>Id: <span class='modal-id'></span></p>
+                        <p class='modal-text'></p>
+                    </div>
+                    <div class="modal-footer blue lighten-5">
+                        <a href="#!" class="modal-btn-voltar modal-close waves-effect waves-light btn-flat red-text">Voltar</a>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </body>

@@ -88,8 +88,7 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Listar : System.Web.UI.P
 			((Literal)e.Item.FindControl("ltlID")).Text = ((HiddenField)e.Item.FindControl("hdnID")).Value = item.PLANTAO_ID.ToString();
 			((Literal)e.Item.FindControl("ltlHospital")).Text = item.HOSPITAL.NOME;
 			((Literal)e.Item.FindControl("ltlValor")).Text = (item.VALOR == null) ? String.Empty : ((Decimal)item.VALOR).ToString("0.00");
-			((Literal)e.Item.FindControl("ltlDataPlantao")).Text = item.DATA_PLANTAO.Value.ToString("dd/MM/yyyy");
-			((Literal)e.Item.FindControl("ltlDataPagamento")).Text = item.DATA_PAGAMENTO.Value.ToString("dd/MM/yyyy");
+			((Literal)e.Item.FindControl("ltlDataPlantao")).Text = item.DATA.Value.ToString("dd/MM/yyyy");
 			((Literal)e.Item.FindControl("ltlCNPJ")).Text = (item.CNPJ == true) ? "Sim" : "Não";
 			((Literal)e.Item.FindControl("ltlINSS")).Text = (item.INSS == true) ? "Sim" : "Não";
 			((Literal)e.Item.FindControl("ltlRecebido")).Text = (item.RECEBIDO == true) ? "Sim" : "Não";
@@ -143,14 +142,14 @@ public partial class Manager_Modulos_Plantoes_Cadastros_Listar : System.Web.UI.P
 		
 
 
-		PLANTAO_Ordem Ordem = (Session["PLANTAO_Ordem"] != null) ? (PLANTAO_Ordem)Session["PLANTAO_Ordem"] : PLANTAO_Ordem.DATA_PLANTAO;
+		PLANTAO_Ordem Ordem = (Session["PLANTAO_Ordem"] != null) ? (PLANTAO_Ordem)Session["PLANTAO_Ordem"] : PLANTAO_Ordem.DATA;
 		OrdemTipo OrdemTipo = (Session["PLANTAO_Ordem"] != null) ? (OrdemTipo)Session["PLANTAO_Ordem_Tipo"] : OrdemTipo.Descendente;
 		Paginacao<PLANTAO> pagLista = null;
 
 		if (!String.IsNullOrEmpty(ddlDataIni.SelectedValue))
 		{
 			OrdemTipo = (Session["PLANTAO_Ordem"] != null) ? (OrdemTipo)Session["PLANTAO_Ordem_Tipo"] : OrdemTipo.Ascendente;
-			filtro.DATA_PLANTAO = DateTime.Parse(ddlDataIni.SelectedValue).AddMinutes(-1);
+			filtro.DATA = DateTime.Parse(ddlDataIni.SelectedValue).AddMinutes(-1);
 			DateTime DATA_FIM = DateTime.Parse(ddlDataIni.SelectedValue).AddMonths(1).AddMinutes(-1);
 			pagLista = new PLANTAO_Service_EXT().Listar((PLANTAO)Session["PLANTAO_Filtro"], this.Pagina, 100, Ordem, OrdemTipo, DATA_FIM);
 			phValorTotal.Visible = true;

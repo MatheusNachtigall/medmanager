@@ -15,9 +15,11 @@ namespace CRM_Blue.Enumerator
         [Description("VALOR")] VALOR = 2,
         [Description("CNPJ")] CNPJ = 3,
         [Description("INSS")] INSS = 4,
-        [Description("DATA_PLANTAO")] DATA_PLANTAO = 5,
-        [Description("DATA_PAGAMENTO")] DATA_PAGAMENTO = 6,
-        [Description("DATA_CADASTRO")] DATA_CADASTRO = 7,
-        [Description("RECEBIDO")] RECEBIDO = 8
+        [Description("DATA")] DATA = 5,
+        [Description("HORARIO")] HORARIO = 6,
+        [Description("PERIODO")] PERIODO = 7,
+        [Description("DATA_PAGAMENTO")] DATA_PAGAMENTO = 8,
+        [Description("DATA_CADASTRO")] DATA_CADASTRO = 9,
+        [Description("RECEBIDO")] RECEBIDO = 10
     }
 }
